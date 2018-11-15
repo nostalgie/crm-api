@@ -1,16 +1,26 @@
+const jwt = require('jsonwebtoken')
+const { User } = require('../data-access/mysql')
 const { sha512 } = require('../utils/createHash')
 
 const login = async (username, password) => {
-  const passwordData = {
-    salt: 'random_salt',
-    hash: 'hash'
+  const user = await User.findByUsername(username)
+  const { hash, salt } = user
+
+  const hashToBeCompared = sha512(password, salt)
+
+  let token = ''
+  if (hash === hashToBeCompared) {
+    const payload = {
+      user: user.id,
+      username: user.username
+    }
+
+    token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '1y'
+    })
   }
 
-  const hashToBeCompared = sha512(password, password.salt)
-
-  if (passwordData.hash === hashToBeCompared || passwordData.hash) {
-    return 'done'
-  }
+  return token
 }
 
 module.exports = {
