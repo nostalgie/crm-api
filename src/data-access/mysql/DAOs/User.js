@@ -7,6 +7,7 @@ class UserDAO {
   }
 
   async findByUsername (username) {
+    console.log(username)
     const result = await User.findOne({
       where: {
         username: {

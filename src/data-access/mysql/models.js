@@ -10,6 +10,8 @@ const Role = mysql.define('role', {
   name: {
     type: Sequelize.STRING
   }
+}, {
+  tableName: 'Roles'
 })
 
 const User = mysql.define('user', {
@@ -22,12 +24,12 @@ const User = mysql.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  passwordSalt: {
+  salt: {
     type: Sequelize.TEXT,
     allowNull: false,
     field: 'password_salt'
   },
-  passwordHash: {
+  hash: {
     type: Sequelize.TEXT,
     allowNull: false,
     field: 'password_hash'

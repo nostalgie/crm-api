@@ -4,6 +4,7 @@ const { sha512 } = require('../utils/createHash')
 
 const login = async (username, password) => {
   try {
+    console.log(username)
     const user = await User.findByUsername(username)
     const { hash, salt } = user
 
