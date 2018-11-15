@@ -1,15 +1,22 @@
 const Sequelize = require('sequelize')
 
+const options = {
+  database: process.env.DB_DATABASE,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  dialect: process.env.DB_DMS,
+  host: process.env.DB_HOST,
+  define: {
+    timestamps: false,
+    underscored: true
+  },
+  sync: {
+    force: false
+  }
+}
+
 const connect = () => {
-  const mysql = new Sequelize(
-    process.env.DB_DATABASE,
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
-    {
-      host: process.env.DB_HOST,
-      dialect: process.env.DB_DMS
-    }
-  )
+  const mysql = new Sequelize(options)
 
   console.log('connected')
   return mysql

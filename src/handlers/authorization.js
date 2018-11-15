@@ -4,7 +4,7 @@ const login = async (req, res) => {
   const { username, password } = req.body
 
   const loginResult = await authorizationService.login(username, password)
-  res.end(loginResult)
+  loginResult.send(res)
 }
 
 module.exports = {
