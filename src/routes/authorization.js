@@ -7,7 +7,7 @@ authorizationRouter.post('/login', async (req, res) => {
   const { username, password } = req.body
 
   const loginResult = await authorizationService.login(username, password)
-  res.send(loginResult)
+  loginResult.respond(res)
 })
 
 module.exports = authorizationRouter

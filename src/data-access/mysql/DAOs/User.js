@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
-const { User } = require('../models')
+const User = require('../models/User')
+const Role = require('../models/Role')
 
 class UserDAO {
   constructor () {
@@ -12,7 +13,16 @@ class UserDAO {
         [name]: {
           [Op.eq]: value
         }
-      }
+      },
+      include: [
+        {
+          model: Role,
+          attributes: [
+            'name'
+          ],
+          required: true
+        }
+      ]
     })
 
     return result

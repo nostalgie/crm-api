@@ -7,8 +7,7 @@ const options = {
   dialect: process.env.DB_DMS,
   host: process.env.DB_HOST,
   define: {
-    timestamps: false,
-    underscored: true
+    timestamps: false
   },
   sync: {
     force: false

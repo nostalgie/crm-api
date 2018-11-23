@@ -1,24 +1,12 @@
 const Sequelize = require('sequelize')
-const mysql = require('./connect')
-
-const Role = mysql.define('role', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: Sequelize.STRING
-  }
-}, {
-  tableName: 'Roles'
-})
+const mysql = require('../connect')
 
 const User = mysql.define('user', {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   username: {
     type: Sequelize.STRING,
@@ -37,16 +25,10 @@ const User = mysql.define('user', {
   roleId: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    field: 'role_id',
-    references: {
-      model: Role
-    }
+    field: 'role_id'
   }
 }, {
   tableName: 'Users'
 })
 
-module.exports = {
-  Role,
-  User
-}
+module.exports = User
