@@ -4,8 +4,7 @@ const { sha512 } = require('../utils/createHash')
 
 const login = async (username, password) => {
   try {
-    console.log(username)
-    const user = await User.findByUsername(username)
+    const user = await User.findBy('username', username)
     const { hash, salt } = user
 
     const hashToCompare = sha512(password, salt)
@@ -22,7 +21,9 @@ const login = async (username, password) => {
       })
     }
 
-    return token
+    return {
+      token
+    }
   } catch (e) {
     console.log(e.stack)
   }

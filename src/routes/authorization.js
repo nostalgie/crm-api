@@ -1,7 +1,13 @@
 const express = require('express')
-const authorizationHandler = require('../handlers/authorization')
+const authorizationService = require('../lib/authorization')
 const authorizationRouter = express.Router()
 
-authorizationRouter.post('/login', authorizationHandler.login)
+authorizationRouter.post('/login', async (req, res) => {
+  console.log(req.body)
+  const { username, password } = req.body
+
+  const loginResult = await authorizationService.login(username, password)
+  res.send(loginResult)
+})
 
 module.exports = authorizationRouter

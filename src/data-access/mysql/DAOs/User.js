@@ -6,12 +6,11 @@ class UserDAO {
     User.sync()
   }
 
-  async findByUsername (username) {
-    console.log(username)
+  async findBy (name, value) {
     const result = await User.findOne({
       where: {
-        username: {
-          [Op.eq]: username
+        [name]: {
+          [Op.eq]: value
         }
       }
     })
