@@ -1,10 +1,9 @@
 const Sequelize = require('sequelize')
 const mysql = require('../connect')
 
-const User = mysql.define('user', {
+const Credentials = mysql.define('credentials', {
   id: {
     type: Sequelize.INTEGER,
-    allowNull: false,
     primaryKey: true,
     autoIncrement: true
   },
@@ -22,13 +21,14 @@ const User = mysql.define('user', {
     allowNull: false,
     field: 'password_hash'
   },
-  roleId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    field: 'role_id'
+  userType: {
+    type: Sequelize.ENUM,
+    values: ['employee', 'customer'],
+    field: 'user_type',
+    allowNull: false
   }
 }, {
-  tableName: 'Users'
+  tableName: 'Login_Credentials'
 })
 
-module.exports = User
+module.exports = Credentials

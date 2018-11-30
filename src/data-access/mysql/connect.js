@@ -10,12 +10,13 @@ const options = {
     timestamps: false
   },
   sync: {
-    force: false
+    force: true
   }
 }
 
 const connect = () => {
   const mysql = new Sequelize(options)
+  mysql.sync()
 
   console.log('connected')
   return mysql
