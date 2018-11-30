@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken')
-const { User } = require('../data-access')
+const { Credentials, Employee } = require('../data-access')
 const { sha512 } = require('../utils/createHash')
 const responseTypes = require('../constants/responseTypes')
+const { userType } = require('../constants/userTypes')
 const Response = require('../responses/Response')
 
 const login = async (username, password) => {
   try {
-    const user = await User.findBy('username', username)
+    const credentials = await Credentials.getByUsername(username)
 
-    if (!user) {
+    if (!credentials) {
       return new Response(responseTypes.INVALID_CREDENTIALS)
     }
 
-    const { hash, salt } = user
+    const { hash, salt } = credentials
 
     const hashToCompare = sha512(password, salt)
 
@@ -21,8 +22,15 @@ const login = async (username, password) => {
     }
 
     const payload = {
-      user: user.id,
-      username: user.username
+      credentials: credentials.id,
+      username: credentials.username
+    }
+
+    if (credentials.userType === userType.EMPLOYEE) {
+      const empRole = await Employee.getRoleByCredsId(credentials.id)
+      payload.role = empRole
+    } else {
+      payload.role = userType.CUSTOMER
     }
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {

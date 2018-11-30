@@ -17,9 +17,7 @@ const Customer = mysql.define('customer', {
   tableName: 'Customers'
 })
 
-Customer.hasOne(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
+Customer.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
 Ticket.belongsTo(Customer, { foreignKey: 'customer_id', sourceKey: 'id' })
-
-Customer.sync()
 
 module.exports = Customer

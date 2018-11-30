@@ -15,6 +15,4 @@ const EmployeeRole = mysql.define('emp_role', {
   tableName: 'Employee_Roles'
 })
 
-EmployeeRole.sync()
-
 module.exports = EmployeeRole

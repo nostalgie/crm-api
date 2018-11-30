@@ -10,7 +10,7 @@ const options = {
     timestamps: false
   },
   sync: {
-    force: true
+    force: false
   }
 }
 

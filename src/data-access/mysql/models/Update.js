@@ -20,6 +20,4 @@ const Update = mysql.define('update', {
   underscored: true
 })
 
-Update.sync()
-
 module.exports = Update

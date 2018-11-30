@@ -25,9 +25,8 @@ const Employee = mysql.define('employee', {
   tableName: 'Employees'
 })
 
-Employee.hasOne(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
-Employee.hasOne(EmployeeRole, { foreignKey: 'role_id', targetKey: 'id' })
-
-Employee.sync()
+Employee.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
+Employee.belongsTo(EmployeeRole, { foreignKey: 'role_id', targetKey: 'id' })
+EmployeeRole.hasMany(Employee, { foreignKey: 'role_id', sourceKey: 'id' })
 
 module.exports = Employee

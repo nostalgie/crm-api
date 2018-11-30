@@ -33,8 +33,8 @@ const Ticket = mysql.define('ticket', {
     allowNull: false
   },
   rating: {
-    type: Sequelize.ENUM,
-    values: [1, 2, 3, 4, 5]
+    type: Sequelize.INTEGER,
+    allowNull: true
   }
 }, {
   tableName: 'Tickets',
@@ -43,7 +43,5 @@ const Ticket = mysql.define('ticket', {
 })
 
 Update.belongsTo(Ticket, { foreignKey: 'user_id', targetKey: 'id' })
-
-Ticket.sync()
 
 module.exports = Ticket
