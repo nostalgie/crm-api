@@ -19,7 +19,7 @@ class EmployeeDAO {
       }
     }
 
-    return (await Employee.findOne(options)).name
+    return (await Employee.findOne(options)).emp_role.name
   }
 }
 

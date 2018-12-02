@@ -21,23 +21,23 @@ const login = async (username, password) => {
       return new Response(responseTypes.INVALID_CREDENTIALS)
     }
 
-    const payload = {
+    const JWTPayload = {
       credentials: credentials.id,
       username: credentials.username
     }
 
     if (credentials.userType === userType.EMPLOYEE) {
       const empRole = await Employee.getRoleByCredsId(credentials.id)
-      payload.role = empRole
+      JWTPayload.role = empRole
     } else {
-      payload.role = userType.CUSTOMER
+      JWTPayload.role = userType.CUSTOMER
     }
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    const token = jwt.sign(JWTPayload, process.env.JWT_SECRET, {
       expiresIn: '1y'
     })
 
-    return new Response({ ...responseTypes.AUTHORIZATION_SUCCESS.code, payload: { token } })
+    return new Response({ ...responseTypes.AUTHORIZATION_SUCCESS.code, payload: { token, role: JWTPayload.role } })
   } catch (e) {
     console.log(e.stack)
   }
