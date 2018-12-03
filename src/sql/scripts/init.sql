@@ -15,4 +15,4 @@ VALUES
 
 INSERT INTO `crm`.`Customers`(name, credentials_id)
 VALUES
-    ('Kerech Kerechevech', 2);
+    ('Nekich na izmene', 2);
