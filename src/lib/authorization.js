@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken')
-const { User } = require('../data-access')
+const { Credentials, Employee } = require('../data-access')
 const { sha512 } = require('../utils/createHash')
 const responseTypes = require('../constants/responseTypes')
+const { userType } = require('../constants/userTypes')
 const Response = require('../responses/Response')
 
 const login = async (username, password) => {
   try {
-    const user = await User.findBy('username', username)
+    const credentials = await Credentials.getByUsername(username)
 
-    if (!user) {
+    if (!credentials) {
       return new Response(responseTypes.INVALID_CREDENTIALS)
     }
 
-    const { hash, salt } = user
+    const { hash, salt } = credentials
 
     const hashToCompare = sha512(password, salt)
 
@@ -20,16 +21,23 @@ const login = async (username, password) => {
       return new Response(responseTypes.INVALID_CREDENTIALS)
     }
 
-    const payload = {
-      user: user.id,
-      username: user.username
+    const JWTPayload = {
+      credentials: credentials.id,
+      username: credentials.username
     }
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    if (credentials.userType === userType.EMPLOYEE) {
+      const empRole = await Employee.getRoleByCredsId(credentials.id)
+      JWTPayload.role = empRole
+    } else {
+      JWTPayload.role = userType.CUSTOMER
+    }
+
+    const token = jwt.sign(JWTPayload, process.env.JWT_SECRET, {
       expiresIn: '1y'
     })
 
-    return new Response({ ...responseTypes.AUTHORIZATION_SUCCESS.code, payload: { token } })
+    return new Response({ ...responseTypes.AUTHORIZATION_SUCCESS.code, payload: { token, role: JWTPayload.role } })
   } catch (e) {
     console.log(e.stack)
   }

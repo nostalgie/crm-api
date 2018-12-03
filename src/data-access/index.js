@@ -1,9 +1,13 @@
 const dms = process.env.DB_DMS
 
-const UserDAO = require(`./${dms}/DAOs/User`)
+const CredentialsDAO = require(`./${dms}/DAOs/Credentials`)
 const RoleDAO = require(`./${dms}/DAOs/Role`)
+const EmployeeDAO = require(`./${dms}/DAOs/Employee`)
+const EmployeeRoleDAO = require(`./${dms}/DAOs/EmployeeRole`)
 
 module.exports = {
-  User: new UserDAO(),
-  Role: new RoleDAO()
+  Credentials: new CredentialsDAO(),
+  Role: new RoleDAO(),
+  Employee: new EmployeeDAO(),
+  EmployeeRole: new EmployeeRoleDAO()
 }

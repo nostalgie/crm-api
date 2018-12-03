@@ -16,6 +16,7 @@ const options = {
 
 const connect = () => {
   const mysql = new Sequelize(options)
+  mysql.sync()
 
   console.log('connected')
   return mysql
