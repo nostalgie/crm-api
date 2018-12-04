@@ -8,7 +8,17 @@ module.exports = {
     },
     code: HttpCodes.UNAUTHORIZED
   },
-  AUTHORIZATION_SUCCESS: {
-    code: 200
+  SUCCESS: {
+    code: HttpCodes.OK
+  },
+  CREATE_SUCCESS: {
+    code: HttpCodes.CREATED
+  },
+  COMMON_ERROR: {
+    payload: {
+      code: HttpCodes.BAD_REQUEST,
+      message: 'Error occured. Please try again later.'
+    },
+    code: HttpCodes.BAD_REQUEST
   }
 }

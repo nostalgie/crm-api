@@ -6,9 +6,8 @@ const ticketsRouter = express.Router()
 
 ticketsRouter.post('/tickets', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const { user, body } = req
-  const result = await ticketsService.createTicket(user, body)
-  console.log(result)
-  res.end()
+  const createResult = await ticketsService.createTicket(user, body)
+  createResult.respond(res)
 })
 
 module.exports = ticketsRouter

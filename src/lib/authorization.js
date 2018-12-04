@@ -37,7 +37,7 @@ const login = async (username, password) => {
       expiresIn: '1y'
     })
 
-    return new Response({ ...responseTypes.AUTHORIZATION_SUCCESS.code, payload: { token, role: JWTPayload.role } })
+    return new Response({ ...responseTypes.SUCCESS.code, payload: { token, role: JWTPayload.role } })
   } catch (e) {
     console.log(e.stack)
   }

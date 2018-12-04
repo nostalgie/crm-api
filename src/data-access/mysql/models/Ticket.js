@@ -35,6 +35,10 @@ const Ticket = mysql.define('ticket', {
   rating: {
     type: Sequelize.INTEGER,
     allowNull: true
+  },
+  customerId: {
+    type: Sequelize.INTEGER,
+    field: 'customer_id'
   }
 }, {
   tableName: 'Tickets',
