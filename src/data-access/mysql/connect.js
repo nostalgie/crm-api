@@ -7,7 +7,11 @@ const options = {
   dialect: process.env.DB_DMS,
   host: process.env.DB_HOST,
   define: {
-    timestamps: false
+    timestamps: false,
+    charset: 'cp1251',
+    dialectOptions: {
+      collate: 'cp1251_general_ci'
+    }
   },
   sync: {
     force: false
