@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('./passport/JwtStrategy')
 const port = process.env.PORT || 3001
 
 const express = require('express')

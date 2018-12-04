@@ -22,7 +22,7 @@ const login = async (username, password) => {
     }
 
     const JWTPayload = {
-      credentials: credentials.id,
+      id: credentials.id,
       username: credentials.username
     }
 
