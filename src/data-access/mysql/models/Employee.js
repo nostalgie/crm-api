@@ -20,6 +20,10 @@ const Employee = mysql.define('employee', {
   middleName: {
     type: Sequelize.STRING,
     field: 'middle_name'
+  },
+  credentialsId: {
+    type: Sequelize.INTEGER,
+    field: 'credentials_id'
   }
 }, {
   tableName: 'Employees'

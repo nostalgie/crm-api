@@ -14,7 +14,7 @@ class EmployeeDAO {
         }
       ],
       where: {
-        credentials_id: {
+        credentialsId: {
           [Op.eq]: id
         }
       }

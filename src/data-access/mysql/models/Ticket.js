@@ -46,6 +46,7 @@ const Ticket = mysql.define('ticket', {
   underscored: true
 })
 
-Update.belongsTo(Ticket, { foreignKey: 'user_id', targetKey: 'id' })
+Update.belongsTo(Ticket, { foreignKey: 'ticket_id', targetKey: 'id' })
+Ticket.hasMany(Update, { foreignKey: 'ticket_id', sourceKey: 'id' })
 
 module.exports = Ticket

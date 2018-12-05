@@ -40,6 +40,7 @@ const login = async (username, password) => {
     return new Response({ ...responseTypes.SUCCESS.code, payload: { token, role: JWTPayload.role } })
   } catch (e) {
     console.log(e.stack)
+    return new Response(responseTypes.COMMON_ERROR)
   }
 }
 

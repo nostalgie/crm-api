@@ -8,11 +8,20 @@ const Update = mysql.define('update', {
     allowNull: false,
     field: 'user_type'
   },
-  isFinising: {
+  isFinishing: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
     allowNull: false,
     field: 'is_finishing'
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    field: 'user_id'
+  },
+  ticketId: {
+    type: Sequelize.INTEGER,
+    field: 'ticket_id'
   }
 }, {
   tableName: 'Updates',
