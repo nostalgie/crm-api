@@ -16,3 +16,9 @@ VALUES
 INSERT INTO `crm`.`Customers`(name, credentials_id)
 VALUES
     ('Nekich na izmene', 2);
+
+INSERT INTO `crm`.`Updates`(user_type, message, user_id, ticket_id, created_at)
+    VALUES 
+        ('employee', 'Отключите тильт.', 1, 1, '2018-12-05 10:14:00'),
+        ('customer', 'Можно ненадо.', 2, 1, '2018-12-05 11:11:11' ),
+        ('employee', 'Можно.', 1, 1, '2018-12-05 12:12:12');

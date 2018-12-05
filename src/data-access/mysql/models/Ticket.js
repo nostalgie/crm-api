@@ -32,6 +32,12 @@ const Ticket = mysql.define('ticket', {
     type: Sequelize.TEXT,
     allowNull: false
   },
+  isFinished: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+    field: 'is_finished'
+  },
   rating: {
     type: Sequelize.INTEGER,
     allowNull: true

@@ -8,11 +8,9 @@ const Update = mysql.define('update', {
     allowNull: false,
     field: 'user_type'
   },
-  isFinishing: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
-    field: 'is_finishing'
+  message: {
+    type: Sequelize.TEXT,
+    allowNull: false
   },
   userId: {
     type: Sequelize.INTEGER,
@@ -25,7 +23,8 @@ const Update = mysql.define('update', {
   }
 }, {
   tableName: 'Updates',
-  createdAt: true,
+  timestamps: true,
+  updatedAt: false,
   underscored: true
 })
 

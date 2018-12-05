@@ -1,4 +1,4 @@
-const { Ticket, Update } = require('../data-access')
+const { Ticket } = require('../data-access')
 const responseTypes = require('../constants/responseTypes')
 const Response = require('../responses/Response')
 
@@ -34,7 +34,11 @@ const getTickets = async (userId, filter) => {
     description: ticket.description,
     createdAt: ticket.created_at,
     updatedAt: ticket.updated_at,
-    updates: ticket.updates.map(update => ({}))
+    updates: ticket.updates.map(update => ({
+      id: update.id,
+      message: update.message,
+      createdAt: update.created_at
+    }))
   }))
 
   return new Response({ ...responseTypes.SUCCESS, payload: { tickets: ticketsToSend } })
