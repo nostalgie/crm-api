@@ -7,7 +7,7 @@ const ticketsRouter = express.Router()
 ticketsRouter.get('/tickets', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const { query, user } = req
   console.log(query)
-  const getResult = await ticketsService.getTickets(user.id, query.filter)
+  const getResult = await ticketsService.getTickets(user, query.state)
   getResult.respond(res)
 })
 

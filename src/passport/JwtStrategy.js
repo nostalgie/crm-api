@@ -8,7 +8,6 @@ const opts = {
 }
 
 passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
-  console.log(jwtPayload)
   const user = await Credentials.getByUsername(jwtPayload.username)
 
   if (!user.id) {

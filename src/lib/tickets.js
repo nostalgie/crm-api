@@ -23,8 +23,8 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (userId, filter) => {
-  const tickets = await Ticket.getByFilter(filter, userId)
+const getTickets = async (user, state) => {
+  const tickets = await Ticket.getByState(state, user)
 
   const userTypeIds = {
     employee: [],
@@ -56,8 +56,6 @@ const getTickets = async (userId, filter) => {
       } }
     ))[0]
   }
-
-  console.log(sortedUpdates)
 
   const ticketsToSend = tickets.map((ticket) => ({
     id: ticket.id,

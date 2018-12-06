@@ -2,6 +2,7 @@ const Sequelize = require('sequelize')
 const mysql = require('../connect')
 const Credentials = require('./Credentials')
 const EmployeeRole = require('./EmployeeRole')
+const Customer = require('./Customer')
 
 const Employee = mysql.define('employee', {
   id: {
@@ -32,5 +33,7 @@ const Employee = mysql.define('employee', {
 Employee.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
 Employee.belongsTo(EmployeeRole, { foreignKey: 'role_id', targetKey: 'id' })
 EmployeeRole.hasMany(Employee, { foreignKey: 'role_id', sourceKey: 'id' })
+Employee.belongsToMany(Customer, { through: 'Customer_Admins', foreignKey: 'employee_id' })
+Customer.belongsToMany(Employee, { through: 'Customer_Admins', foreignKey: 'customer_id' })
 
 module.exports = Employee
