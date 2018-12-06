@@ -12,91 +12,66 @@ class TicketDAO {
   }
 
   getOpenTicketsOptions (userId) {
-    const options = {
-      where: {
-        customerId: {
-          [Op.eq]: userId
-        },
-        rating: {
-          [Op.eq]: null
-        },
-        isFinished: {
-          [Op.eq]: false
-        }
+    const whereOptions = {
+      rating: {
+        [Op.eq]: null
       },
-      include: [
-        {
-          model: Update,
-          required: false
-        }
-      ]
+      isFinished: {
+        [Op.eq]: false
+      }
     }
 
-    return options
+    return whereOptions
   }
 
   getAwaitingTicketsOptions (userId) {
-    const options = {
-      where: {
-        customerId: {
-          [Op.eq]: userId
-        },
-        rating: {
-          [Op.eq]: null
-        },
-        isFinished: {
-          [Op.eq]: true
-        }
+    const whereOptions = {
+      rating: {
+        [Op.eq]: null
       },
-      include: [
-        {
-          model: Update,
-          required: false
-        }
-      ]
+      isFinished: {
+        [Op.eq]: true
+      }
     }
 
-    return options
+    return whereOptions
   }
 
   getClosedTicketsOptions (userId) {
-    const options = {
-      where: {
-        customerId: {
-          [Op.eq]: userId
-        },
-        rating: {
-          [Op.ne]: null
-        },
-        isFinished: {
-          [Op.eq]: true
-        }
+    const whereOptions = {
+      rating: {
+        [Op.ne]: null
       },
-      include: [
-        {
-          model: Update,
-          required: false
-        }
-      ]
+      isFinished: {
+        [Op.eq]: true
+      }
     }
 
-    return options
+    return whereOptions
   }
 
   async getByState (state, user) {
     const isCustomer = user.role === userType.CUSTOMER
-    let options
+    let options = {
+      include: [
+        {
+          model: Update,
+          required: false
+        }
+      ]
+    }
+
     switch (state) {
       case ticketStates.OPEN: {
-        options = this.getOpenTicketsOptions(user)
+        options.where = this.getOpenTicketsOptions(user)
         break
       }
       case ticketStates.AWAITING_REVIEW: {
-        options = this.getAwaitingTicketsOptions(user)
+        options.where = this.getAwaitingTicketsOptions(user)
         break
       }
       case ticketStates.CLOSED: {
-        options = this.getClosedTicketsOptions(user)
+        options.where = this.getClosedTicketsOptions(user)
         break
       }
     }
