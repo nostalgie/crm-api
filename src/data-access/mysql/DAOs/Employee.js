@@ -22,6 +22,24 @@ class EmployeeDAO {
 
     return (await Employee.findOne(options)).emp_role.name
   }
+
+  getEmployeesForUpdates (ids) {
+    const options = {
+      attributes: [ 'id', 'firstName', 'lastName' ],
+      where: {
+        id: {
+          [Op.in]: ids
+        }
+      },
+      include: [
+        {
+          model: EmployeeRole,
+          attributes: [ 'name' ]
+        }
+      ]
+    }
+    return Employee.findAll(options)
+  }
 }
 
 module.exports = EmployeeDAO

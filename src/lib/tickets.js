@@ -1,5 +1,6 @@
-const { Ticket } = require('../data-access')
+const { Ticket, Customer, Employee } = require('../data-access')
 const responseTypes = require('../constants/responseTypes')
+const { userType } = require('../constants/userTypes')
 const Response = require('../responses/Response')
 
 const createTicket = async (user, ticketInfo) => {
@@ -25,6 +26,39 @@ const createTicket = async (user, ticketInfo) => {
 const getTickets = async (userId, filter) => {
   const tickets = await Ticket.getByFilter(filter, userId)
 
+  const userTypeIds = {
+    employee: [],
+    customer: []
+  }
+
+  for (let ticket of tickets) {
+    Object.keys(userType).forEach(key => userTypeIds[userType[key]].push(
+      ticket.updates.filter(update => update.userType === userType[key]).map(update => update.userId)
+    ))
+  }
+
+  const usersInfo = await Promise.all([
+    Employee.getEmployeesForUpdates(userTypeIds[userType.EMPLOYEE]),
+    Customer.getCustomersForUpdates(userTypeIds[userType.CUSTOMER])
+  ])
+
+  const sortedUpdates = {
+    employee: usersInfo[0].map(info => (
+      { [info.id]: {
+        firstName: info.firstName,
+        lastName: info.lastName,
+        role: info.emp_role.name
+      } }
+    ))[0],
+    customer: usersInfo[1].map(info => (
+      { [info.id]: {
+        name: info.name
+      } }
+    ))[0]
+  }
+
+  console.log(sortedUpdates)
+
   const ticketsToSend = tickets.map((ticket) => ({
     id: ticket.id,
     type: ticket.type,
@@ -37,7 +71,11 @@ const getTickets = async (userId, filter) => {
     updates: ticket.updates.map(update => ({
       id: update.id,
       message: update.message,
-      createdAt: update.created_at
+      createdAt: update.created_at,
+      userInfo: {
+        type: update.userType,
+        ...sortedUpdates[update.userType][update.userId]
+      }
     }))
   }))
 

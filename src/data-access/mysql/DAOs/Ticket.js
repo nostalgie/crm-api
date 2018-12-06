@@ -26,16 +26,13 @@ class TicketDAO {
       include: [
         {
           model: Update,
-          attributes: [ 'id', 'userId', 'userType' ],
           required: false
         }
       ]
     }
 
     const tickets = await Ticket.findAll(options)
-
-    const updates = await Promise.all(tickets.map(ticket => UpdateDAO.getUpdatesForTicket(ticket.id, ticket.updates)))
-    console.log('done')
+    return tickets
   }
 
   getByFilter (filter, userId) {
