@@ -84,7 +84,21 @@ class TicketDAO {
     const fieldsToUpdate = {
       executorId
     }
+    const options = {
+      where: {
+        id: {
+          [Op.eq]: ticketId
+        }
+      }
+    }
 
+    return Ticket.update(fieldsToUpdate, options)
+  }
+
+  finishTicket (ticketId) {
+    const fieldsToUpdate = {
+      isFinished: true
+    }
     const options = {
       where: {
         id: {

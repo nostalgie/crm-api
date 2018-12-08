@@ -19,8 +19,13 @@ ticketsRouter.post('/tickets', passport.authenticate('jwt', { session: false }),
 ticketsRouter.put('/tickets/update', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const { user, body } = req
   const updateResult = await ticketsService.updateTicket(user, body)
-  res.body = updateResult
-  res.send()
+  res.status(201).end(updateResult)
+})
+
+ticketsRouter.post('/tickets/finish', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { ticketId } = req.body
+  await ticketsService.finishTicket(ticketId)
+  res.end()
 })
 
 module.exports = ticketsRouter

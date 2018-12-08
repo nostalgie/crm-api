@@ -49,10 +49,15 @@ const getTickets = async (user, state) => {
       .forEach(key =>
         userTypeIds[userType[key]]
           .push(
-            ...ticket.updates
-              .filter(update => update.userType === userType[key])
-              .map(update => update.userId)
-          ))
+            ...Array.from(
+              new Set(
+                ticket.updates
+                  .filter(update => update.userType === userType[key])
+                  .map(update => update.userId)
+              )
+            )
+          )
+      )
   }
 
   const usersInfo = await Promise.all([
@@ -117,8 +122,13 @@ const updateTicket = async (user, updateInfo) => {
   }
 }
 
+const finishTicket = (ticketId) => {
+  return Ticket.finishTicket(ticketId)
+}
+
 module.exports = {
   createTicket,
   getTickets,
-  updateTicket
+  updateTicket,
+  finishTicket
 }
