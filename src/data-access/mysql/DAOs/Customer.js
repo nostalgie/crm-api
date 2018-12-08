@@ -16,6 +16,10 @@ class CustomerDAO {
   }
 
   getCustomersForUpdates (ids) {
+    if (!ids.length) {
+      return []
+    }
+
     const options = {
       attributes: [ 'id', 'name' ],
       where: {

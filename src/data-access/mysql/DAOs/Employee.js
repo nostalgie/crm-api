@@ -24,6 +24,10 @@ class EmployeeDAO {
   }
 
   getEmployeesForUpdates (ids) {
+    if (!ids.length) {
+      return []
+    }
+
     const options = {
       attributes: [ 'id', 'firstName', 'lastName' ],
       where: {

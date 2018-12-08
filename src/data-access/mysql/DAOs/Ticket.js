@@ -3,7 +3,6 @@ const Ticket = require('../models/Ticket')
 const Update = require('../models/Update')
 
 const ticketStates = require('../../../constants/ticketStates')
-const { userType } = require('../../../constants/userTypes')
 
 class TicketDAO {
   create (ticket) {
@@ -79,6 +78,22 @@ class TicketDAO {
       : { [Op.in]: idsForTickets }
 
     return Ticket.findAll(options)
+  }
+
+  updateExecutor (ticketId, executorId) {
+    const fieldsToUpdate = {
+      executorId
+    }
+
+    const options = {
+      where: {
+        id: {
+          [Op.eq]: ticketId
+        }
+      }
+    }
+
+    return Ticket.update(fieldsToUpdate, options)
   }
 }
 

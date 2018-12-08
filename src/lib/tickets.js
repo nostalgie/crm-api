@@ -1,4 +1,4 @@
-const { Ticket, Customer, Employee } = require('../data-access')
+const { Ticket, Customer, Employee, Update } = require('../data-access')
 const responseTypes = require('../constants/responseTypes')
 const { userType } = require('../constants/userTypes')
 const Response = require('../responses/Response')
@@ -27,7 +27,7 @@ const createTicket = async (user, ticketInfo) => {
 }
 
 const getTickets = async (user, state) => {
-  const isCustomer = user.role === userType.CUSTOMER
+  const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
   if (isCustomer) {
@@ -45,9 +45,14 @@ const getTickets = async (user, state) => {
   }
 
   for (let ticket of tickets) {
-    Object.keys(userType).forEach(key => userTypeIds[userType[key]].push(
-      ticket.updates.filter(update => update.userType === userType[key]).map(update => update.userId)
-    ))
+    Object.keys(userType)
+      .forEach(key =>
+        userTypeIds[userType[key]]
+          .push(
+            ...ticket.updates
+              .filter(update => update.userType === userType[key])
+              .map(update => update.userId)
+          ))
   }
 
   const usersInfo = await Promise.all([
@@ -93,7 +98,27 @@ const getTickets = async (user, state) => {
   return new Response({ ...responseTypes.SUCCESS, payload: { tickets: ticketsToSend } })
 }
 
+const updateTicket = async (user, updateInfo) => {
+  const { ticketId, executorId, message } = updateInfo
+  const update = {
+    userType: user.type,
+    userId: user.id,
+    ticketId: ticketId,
+    message: message
+  }
+
+  const createdUpdate = await Update.create(update)
+
+  if (executorId) {
+    await Ticket.updateExecutor(ticketId, executorId)
+  }
+  return {
+    id: createdUpdate.id
+  }
+}
+
 module.exports = {
   createTicket,
-  getTickets
+  getTickets,
+  updateTicket
 }
