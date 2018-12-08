@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Credentials, Employee } = require('../data-access')
+const { Credentials, Employee, Customer } = require('../data-access')
 const { sha512 } = require('../utils/createHash')
 const responseTypes = require('../constants/responseTypes')
 const { userType } = require('../constants/userTypes')
@@ -22,14 +22,16 @@ const login = async (username, password) => {
     }
 
     const JWTPayload = {
-      id: credentials.id,
       username: credentials.username
     }
 
     if (credentials.userType === userType.EMPLOYEE) {
-      const empRole = await Employee.getRoleByCredsId(credentials.id)
-      JWTPayload.role = empRole
+      const emp = await Employee.getEmployeeByCredsId(credentials.id)
+      JWTPayload.id = emp.id
+      JWTPayload.role = emp.emp_role.name
     } else {
+      const customer = await Customer.getCustomerByCredsId(credentials.id)
+      JWTPayload.id = customer.id
       JWTPayload.role = userType.CUSTOMER
     }
 

@@ -3,6 +3,18 @@ const Customer = require('../models/Customer')
 const Employee = require('../models/Employee')
 
 class CustomerDAO {
+  getCustomerByCredsId (id) {
+    const options = {
+      where: {
+        credentialsId: {
+          [Op.eq]: id
+        }
+      }
+    }
+
+    return Customer.find(options)
+  }
+
   getCustomersForUpdates (ids) {
     const options = {
       attributes: [ 'id', 'name' ],
@@ -38,4 +50,4 @@ class CustomerDAO {
   }
 }
 
-module.exports = CustomerDAO
+module.exports = new CustomerDAO()

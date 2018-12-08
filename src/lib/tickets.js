@@ -4,8 +4,11 @@ const { userType } = require('../constants/userTypes')
 const Response = require('../responses/Response')
 
 const createTicket = async (user, ticketInfo) => {
+  const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
+
   const ticket = {
     customerId: user.id,
+    executorId: seniorAdmin.id,
     customerFirstName: ticketInfo.firstName,
     customerLastName: ticketInfo.lastName,
     customerNumber: ticketInfo.phoneNumber,
@@ -24,7 +27,17 @@ const createTicket = async (user, ticketInfo) => {
 }
 
 const getTickets = async (user, state) => {
-  const tickets = await Ticket.getByState(state, user)
+  const isCustomer = user.role === userType.CUSTOMER
+  let idsForTickets
+
+  if (isCustomer) {
+    idsForTickets = user.id
+  } else {
+    const customers = await Customer.getDependantCustomers(user.id)
+    idsForTickets = customers.map(customer => customer.id)
+  }
+
+  const tickets = await Ticket.getByState(state, isCustomer, idsForTickets)
 
   const userTypeIds = {
     employee: [],

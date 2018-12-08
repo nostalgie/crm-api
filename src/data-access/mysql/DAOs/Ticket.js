@@ -1,7 +1,6 @@
 const { Op } = require('sequelize')
 const Ticket = require('../models/Ticket')
 const Update = require('../models/Update')
-const CustomerDAO = new (require('./Customer'))()
 
 const ticketStates = require('../../../constants/ticketStates')
 const { userType } = require('../../../constants/userTypes')
@@ -11,7 +10,7 @@ class TicketDAO {
     return Ticket.create(ticket)
   }
 
-  getOpenTicketsOptions (userId) {
+  getOpenTicketsOptions () {
     const whereOptions = {
       rating: {
         [Op.eq]: null
@@ -24,7 +23,7 @@ class TicketDAO {
     return whereOptions
   }
 
-  getAwaitingTicketsOptions (userId) {
+  getAwaitingTicketsOptions () {
     const whereOptions = {
       rating: {
         [Op.eq]: null
@@ -37,7 +36,7 @@ class TicketDAO {
     return whereOptions
   }
 
-  getClosedTicketsOptions (userId) {
+  getClosedTicketsOptions () {
     const whereOptions = {
       rating: {
         [Op.ne]: null
@@ -50,8 +49,7 @@ class TicketDAO {
     return whereOptions
   }
 
-  async getByState (state, user) {
-    const isCustomer = user.role === userType.CUSTOMER
+  async getByState (state, isCustomer, idsForTickets) {
     let options = {
       include: [
         {
@@ -63,35 +61,25 @@ class TicketDAO {
 
     switch (state) {
       case ticketStates.OPEN: {
-        options.where = this.getOpenTicketsOptions(user)
+        options.where = this.getOpenTicketsOptions()
         break
       }
       case ticketStates.AWAITING_REVIEW: {
-        options.where = this.getAwaitingTicketsOptions(user)
+        options.where = this.getAwaitingTicketsOptions()
         break
       }
       case ticketStates.CLOSED: {
-        options.where = this.getClosedTicketsOptions(user)
+        options.where = this.getClosedTicketsOptions()
         break
       }
     }
 
-    let whereCustomerId
-    if (isCustomer) {
-      whereCustomerId = {
-        [Op.eq]: user.id
-      }
-    } else {
-      const customers = await CustomerDAO.getDependantCustomers(user.id)
-      whereCustomerId = {
-        [Op.in]: customers.map(customer => customer.id)
-      }
-    }
-
-    options.where.customerId = whereCustomerId
+    options.where.customerId = isCustomer
+      ? { [Op.eq]: idsForTickets }
+      : { [Op.in]: idsForTickets }
 
     return Ticket.findAll(options)
   }
 }
 
-module.exports = TicketDAO
+module.exports = new TicketDAO()

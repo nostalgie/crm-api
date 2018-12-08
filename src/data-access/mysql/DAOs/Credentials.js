@@ -15,4 +15,4 @@ class CredentialsDAO {
   }
 }
 
-module.exports = CredentialsDAO
+module.exports = new CredentialsDAO()

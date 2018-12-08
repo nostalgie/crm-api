@@ -13,8 +13,8 @@ passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
   if (!user.id) {
     return done()
   } else {
-    const { id, username } = user
-    const { role } = jwtPayload
+    const { username } = user
+    const { id, role } = jwtPayload
     return done(null, { id, username, role })
   }
 }))
