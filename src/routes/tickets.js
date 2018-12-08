@@ -28,4 +28,10 @@ ticketsRouter.post('/tickets/finish', passport.authenticate('jwt', { session: fa
   res.end()
 })
 
+ticketsRouter.post('/tickets/rate', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { ticketId, rating } = req.body
+  await ticketsService.rateTicket(ticketId, rating)
+  res.end()
+})
+
 module.exports = ticketsRouter

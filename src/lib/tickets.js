@@ -126,9 +126,14 @@ const finishTicket = (ticketId) => {
   return Ticket.finishTicket(ticketId)
 }
 
+const rateTicket = (ticketId, rating) => {
+  return Ticket.rateTicket(ticketId, Number(rating))
+}
+
 module.exports = {
   createTicket,
   getTickets,
   updateTicket,
-  finishTicket
+  finishTicket,
+  rateTicket
 }

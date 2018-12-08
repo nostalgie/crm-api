@@ -109,6 +109,21 @@ class TicketDAO {
 
     return Ticket.update(fieldsToUpdate, options)
   }
+
+  rateTicket (ticketId, rating) {
+    const fieldsToUpdate = {
+      rating
+    }
+    const options = {
+      where: {
+        id: {
+          [Op.eq]: ticketId
+        }
+      }
+    }
+
+    return Ticket.update(fieldsToUpdate, options)
+  }
 }
 
 module.exports = new TicketDAO()
