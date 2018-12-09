@@ -13,7 +13,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(passport.initialize())
-app.use(router)
+app.use('/api', router)
 app.use(errorMiddleware)
 
 app.listen(port)

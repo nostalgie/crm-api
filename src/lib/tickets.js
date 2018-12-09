@@ -1,7 +1,5 @@
 const { Ticket, Customer, Employee, Update } = require('../data-access')
-const responseTypes = require('../constants/responseTypes')
 const { userType } = require('../constants/userTypes')
-const Response = require('../responses/Response')
 
 const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
@@ -19,10 +17,9 @@ const createTicket = async (user, ticketInfo) => {
   try {
     const ticketResult = await Ticket.create(ticket)
 
-    return new Response({ ...responseTypes.CREATE_SUCCESS, payload: { id: ticketResult.id } })
+    return { id: ticketResult.id }
   } catch (e) {
     console.log(e)
-    return new Response(responseTypes.COMMON_ERROR)
   }
 }
 
@@ -100,7 +97,7 @@ const getTickets = async (user, state) => {
     }))
   }))
 
-  return new Response({ ...responseTypes.SUCCESS, payload: { tickets: ticketsToSend } })
+  return { tickets: ticketsToSend }
 }
 
 const updateTicket = async (user, updateInfo) => {

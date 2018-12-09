@@ -12,7 +12,7 @@ class CustomerDAO {
       }
     }
 
-    return Customer.find(options)
+    return Customer.findOne(options)
   }
 
   getCustomersForUpdates (ids) {
