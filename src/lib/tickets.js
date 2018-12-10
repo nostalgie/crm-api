@@ -34,7 +34,7 @@ const getTickets = async (user, state) => {
     idsForTickets = customers.map(customer => customer.id)
   }
 
-  const tickets = await Ticket.getByState(state, isCustomer, idsForTickets)
+  const tickets = await Ticket.getByState(user.id, state, isCustomer, idsForTickets)
 
   const userTypeIds = {
     employee: [],
@@ -69,12 +69,12 @@ const getTickets = async (user, state) => {
         lastName: info.lastName,
         role: info.emp_role.name
       } }
-    ))[0],
+    )),
     customer: usersInfo[1].map(info => (
       { [info.id]: {
         name: info.name
       } }
-    ))[0]
+    ))
   }
 
   const ticketsToSend = tickets.map((ticket) => ({
@@ -86,15 +86,22 @@ const getTickets = async (user, state) => {
     description: ticket.description,
     createdAt: ticket.created_at,
     updatedAt: ticket.updated_at,
-    updates: ticket.updates.map(update => ({
-      id: update.id,
-      message: update.message,
-      createdAt: update.created_at,
-      userInfo: {
-        type: update.userType,
-        ...sortedUpdates[update.userType][update.userId]
+    isFinished: ticket.isFinished,
+    rating: ticket.rating,
+    updates: ticket.updates.map(update => {
+      const userInfo = sortedUpdates[update.userType]
+        .find(info => +Object.keys(info)[0] === update.userId)[update.userId]
+
+      return {
+        id: update.id,
+        message: update.message,
+        createdAt: update.created_at,
+        userInfo: {
+          type: update.userType,
+          ...userInfo
+        }
       }
-    }))
+    })
   }))
 
   return { tickets: ticketsToSend }

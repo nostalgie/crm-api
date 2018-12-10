@@ -9,13 +9,16 @@ class TicketDAO {
     return Ticket.create(ticket)
   }
 
-  getOpenTicketsOptions () {
+  getOpenTicketsOptions (userId) {
     const whereOptions = {
       rating: {
         [Op.eq]: null
       },
       isFinished: {
         [Op.eq]: false
+      },
+      executorId: {
+        [Op.eq]: userId
       }
     }
 
@@ -48,7 +51,23 @@ class TicketDAO {
     return whereOptions
   }
 
-  async getByState (state, isCustomer, idsForTickets) {
+  getSpecificAdminTicketsOptions (adminId) {
+    const whereOptions = {
+      rating: {
+        [Op.eq]: null
+      },
+      isFinished: {
+        [Op.eq]: false
+      },
+      executorId: { // ULTRA COOOOOL (AAAAA)
+        [Op.eq]: adminId
+      }
+    }
+
+    return whereOptions
+  }
+
+  async getByState (userId, state, isCustomer, idsForTickets) {
     let options = {
       include: [
         {
@@ -60,7 +79,7 @@ class TicketDAO {
 
     switch (state) {
       case ticketStates.OPEN: {
-        options.where = this.getOpenTicketsOptions()
+        options.where = this.getOpenTicketsOptions(userId)
         break
       }
       case ticketStates.AWAITING_REVIEW: {
@@ -69,6 +88,20 @@ class TicketDAO {
       }
       case ticketStates.CLOSED: {
         options.where = this.getClosedTicketsOptions()
+        break
+      }
+      // ToDo: HUGE refactoring of this logic
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      case ticketStates.FOR_DUTY: {
+        options.where = this.getSpecificAdminTicketsOptions(1)
+        break
+      }
+      case ticketStates.FOR_MANAGER: {
+        options.where = this.getSpecificAdminTicketsOptions(3)
+        break
+      }
+      case ticketStates.FOR_SENIOR: {
+        options.where = this.getSpecificAdminTicketsOptions(2)
         break
       }
     }

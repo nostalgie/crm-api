@@ -39,7 +39,7 @@ const login = async (username, password) => {
     expiresIn: '1y'
   })
 
-  return { token, role: JWTPayload.role || JWTPayload.type }
+  return { token, role: JWTPayload.adminRole || JWTPayload.type }
 }
 
 module.exports = {
