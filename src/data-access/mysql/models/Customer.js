@@ -12,6 +12,10 @@ const Customer = mysql.define('customer', {
   name: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  credentialsId: {
+    type: Sequelize.INTEGER,
+    field: 'credentials_id'
   }
 }, {
   tableName: 'Customers'

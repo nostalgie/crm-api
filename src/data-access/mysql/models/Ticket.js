@@ -32,9 +32,23 @@ const Ticket = mysql.define('ticket', {
     type: Sequelize.TEXT,
     allowNull: false
   },
+  isFinished: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+    field: 'is_finished'
+  },
   rating: {
     type: Sequelize.INTEGER,
     allowNull: true
+  },
+  customerId: {
+    type: Sequelize.INTEGER,
+    field: 'customer_id'
+  },
+  executorId: {
+    type: Sequelize.INTEGER,
+    field: 'executor_id'
   }
 }, {
   tableName: 'Tickets',
@@ -42,6 +56,7 @@ const Ticket = mysql.define('ticket', {
   underscored: true
 })
 
-Update.belongsTo(Ticket, { foreignKey: 'user_id', targetKey: 'id' })
+Update.belongsTo(Ticket, { foreignKey: 'ticket_id', targetKey: 'id' })
+Ticket.hasMany(Update, { foreignKey: 'ticket_id', sourceKey: 'id' })
 
 module.exports = Ticket
