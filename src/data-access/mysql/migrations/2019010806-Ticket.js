@@ -4,8 +4,8 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Tickets', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
@@ -45,11 +45,21 @@ module.exports = {
       },
       customerId: {
         type: Sequelize.INTEGER,
-        field: 'customer_id'
+        field: 'customer_id',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Customers',
+          key: 'id'
+        }
       },
       executorId: {
         type: Sequelize.INTEGER,
-        field: 'executor_id'
+        field: 'executor_id',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Employees',
+          key: 'id'
+        }
       },
       createdAt: {
         type: Sequelize.DATE,

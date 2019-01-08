@@ -4,8 +4,8 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Employees', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
@@ -23,11 +23,21 @@ module.exports = {
       },
       credentialsId: {
         type: Sequelize.INTEGER,
-        field: 'credentials_id'
+        field: 'credentials_id',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Login_Credentials',
+          key: 'id'
+        }
       },
       roleId: {
         type: Sequelize.INTEGER,
-        field: 'role_id'
+        field: 'role_id',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Employee_Roles',
+          key: 'id'
+        }
       }
     })
   },

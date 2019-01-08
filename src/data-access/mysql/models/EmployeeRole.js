@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   EmployeeRole.associate = function (models) {
-
+    EmployeeRole.hasMany(models.Employee, { foreignKey: 'role_id', sourceKey: 'id', onDelete: 'CASCADE' })
   }
 
   return EmployeeRole

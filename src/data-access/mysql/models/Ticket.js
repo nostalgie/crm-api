@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     customerId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'customer_id'
     },
     executorId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'executor_id'
     }
   }, {
@@ -55,11 +55,10 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Ticket.associate = function (models) {
-
+    Ticket.hasMany(models.Update, { foreignKey: 'ticket_id', sourceKey: 'id', onDelete: 'CASCADE' })
+    Ticket.belongsTo(models.Customer, { foreignKey: 'customer_id', sourceKey: 'id', onDelete: 'CASCADE' })
+    Ticket.belongsTo(models.Employee, { foreignKey: 'executorId', targetKey: 'id', onDelete: 'CASCADE' })
   }
 
   return Ticket
 }
-
-// Update.belongsTo(Ticket, { foreignKey: 'ticket_id', targetKey: 'id' })
-// Ticket.hasMany(Update, { foreignKey: 'ticket_id', sourceKey: 'id' })

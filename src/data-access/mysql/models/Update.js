@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'user_id'
     },
     ticketId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'ticket_id'
     }
   }, {
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Update.associate = function (models) {
-
+    Update.belongsTo(models.Ticket, { foreignKey: 'ticket_id', targetKey: 'id', onDelete: 'CASCADE' })
   }
 
   return Update

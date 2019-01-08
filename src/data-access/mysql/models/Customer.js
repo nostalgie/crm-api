@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     credentialsId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'credentials_id'
     }
   }, {
@@ -19,11 +19,9 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Customer.associate = function (models) {
-
+    Customer.belongsToMany(models.Employee, { through: 'Customer_Admins', foreignKey: 'customer_id', onDelete: 'CASCADE' })
+    Customer.belongsTo(models.Credentials, { foreignKey: 'credentials_id', targetKey: 'id', onDelete: 'CASCADE' })
   }
 
   return Customer
 }
-
-// Customer.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
-// Ticket.belongsTo(Customer, { foreignKey: 'customer_id', sourceKey: 'id' })

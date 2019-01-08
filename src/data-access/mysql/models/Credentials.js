@@ -30,9 +30,5 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Credentials'
   })
 
-  Credentials.associate = function (models) {
-
-  }
-
   return Credentials
 }

@@ -4,8 +4,8 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Updates', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
@@ -26,7 +26,12 @@ module.exports = {
       },
       ticketId: {
         type: Sequelize.INTEGER,
-        field: 'ticket_id'
+        field: 'ticket_id',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Tickets',
+          key: 'id'
+        }
       },
       createdAt: {
         type: Sequelize.DATE,

@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       field: 'middle_name'
     },
     credentialsId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'credentials_id'
     },
     roleId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       field: 'role_id'
     }
   }, {
@@ -31,16 +31,11 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Employee.associate = function (models) {
-
+    Employee.belongsTo(models.Credentials, { foreignKey: 'credentials_id', targetKey: 'id', onDelete: 'CASCADE' })
+    Employee.belongsTo(models.EmployeeRole, { foreignKey: 'role_id', targetKey: 'id', onDelete: 'CASCADE' })
+    Employee.belongsToMany(models.Customer, { through: 'Customer_Admins', foreignKey: 'employee_id', onDelete: 'CASCADE' })
+    Employee.hasMany(models.Ticket, { foreignKey: 'executorId', sourceKey: 'id', onDelete: 'CASCADE' })
   }
 
   return Employee
 }
-
-// Employee.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
-// Employee.belongsTo(EmployeeRole, { foreignKey: 'role_id', targetKey: 'id' })
-// EmployeeRole.hasMany(Employee, { foreignKey: 'role_id', sourceKey: 'id' })
-// Employee.belongsToMany(Customer, { through: 'Customer_Admins', foreignKey: 'employee_id' })
-// Customer.belongsToMany(Employee, { through: 'Customer_Admins', foreignKey: 'customer_id' })
-// Employee.hasMany(Ticket, { foreignKey: 'executorId', sourceKey: 'id' })
-// Ticket.belongsTo(Employee, { foreignKey: 'executorId', targetKey: 'id' })

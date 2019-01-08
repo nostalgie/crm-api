@@ -2,25 +2,21 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Customers', {
+    return queryInterface.createTable('Employee_Roles', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
       name: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      credentialsId: {
-        type: Sequelize.INTEGER,
-        field: 'credentials_id'
       }
     })
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Customers')
+    return queryInterface.dropTable('Employee_Roles')
   }
 }
