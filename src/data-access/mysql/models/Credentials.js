@@ -1,34 +1,38 @@
-const Sequelize = require('sequelize')
-const mysql = require('../connect')
+module.exports = (sequelize, DataTypes) => {
+  const Credentials = sequelize.define('credentials', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    salt: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: 'password_salt'
+    },
+    hash: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: 'password_hash'
+    },
+    userType: {
+      type: DataTypes.ENUM,
+      values: ['employee', 'customer'],
+      field: 'user_type',
+      allowNull: false
+    }
+  }, {
+    tableName: 'Credentials'
+  })
 
-const Credentials = mysql.define('credentials', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  username: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  salt: {
-    type: Sequelize.TEXT,
-    allowNull: false,
-    field: 'password_salt'
-  },
-  hash: {
-    type: Sequelize.TEXT,
-    allowNull: false,
-    field: 'password_hash'
-  },
-  userType: {
-    type: Sequelize.ENUM,
-    values: ['employee', 'customer'],
-    field: 'user_type',
-    allowNull: false
+  Credentials.associate = function (models) {
+
   }
-}, {
-  tableName: 'Login_Credentials'
-})
 
-module.exports = Credentials
+  return Credentials
+}

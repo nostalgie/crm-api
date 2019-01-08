@@ -1,27 +1,29 @@
-const Sequelize = require('sequelize')
-const mysql = require('../connect')
-const Credentials = require('./Credentials')
-const Ticket = require('./Ticket')
+module.exports = (sequelize, DataTypes) => {
+  const Customer = sequelize.define('customer', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    credentialsId: {
+      type: DataTypes.INTEGER,
+      field: 'credentials_id'
+    }
+  }, {
+    tableName: 'Customers'
+  })
 
-const Customer = mysql.define('customer', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  credentialsId: {
-    type: Sequelize.INTEGER,
-    field: 'credentials_id'
+  Customer.associate = function (models) {
+
   }
-}, {
-  tableName: 'Customers'
-})
 
-Customer.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
-Ticket.belongsTo(Customer, { foreignKey: 'customer_id', sourceKey: 'id' })
+  return Customer
+}
 
-module.exports = Customer
+// Customer.belongsTo(Credentials, { foreignKey: 'credentials_id', targetKey: 'id' })
+// Ticket.belongsTo(Customer, { foreignKey: 'customer_id', sourceKey: 'id' })

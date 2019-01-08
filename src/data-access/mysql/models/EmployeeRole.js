@@ -1,18 +1,22 @@
-const Sequelize = require('sequelize')
-const mysql = require('../connect')
+module.exports = (sequelize, DataTypes) => {
+  const EmployeeRole = sequelize.define('emp_role', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }, {
+    tableName: 'Employee_Roles'
+  })
 
-const EmployeeRole = mysql.define('emp_role', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false
+  EmployeeRole.associate = function (models) {
+
   }
-}, {
-  tableName: 'Employee_Roles'
-})
 
-module.exports = EmployeeRole
+  return EmployeeRole
+}

@@ -1,31 +1,40 @@
-const Sequelize = require('sequelize')
-const mysql = require('../connect')
+module.exports = (sequelize, DataTypes) => {
+  const Update = sequelize.define('update', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false
+    },
+    userType: {
+      type: DataTypes.ENUM,
+      values: ['employee', 'customer'],
+      allowNull: false,
+      field: 'user_type'
+    },
+    message: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: 'user_id'
+    },
+    ticketId: {
+      type: DataTypes.INTEGER,
+      field: 'ticket_id'
+    }
+  }, {
+    tableName: 'Updates',
+    timestamps: true,
+    updatedAt: false,
+    underscored: true
+  })
 
-const Update = mysql.define('update', {
-  userType: {
-    type: Sequelize.ENUM,
-    values: ['employee', 'customer'],
-    allowNull: false,
-    field: 'user_type'
-  },
-  message: {
-    type: Sequelize.TEXT,
-    allowNull: false
-  },
-  userId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    field: 'user_id'
-  },
-  ticketId: {
-    type: Sequelize.INTEGER,
-    field: 'ticket_id'
+  Update.associate = function (models) {
+
   }
-}, {
-  tableName: 'Updates',
-  timestamps: true,
-  updatedAt: false,
-  underscored: true
-})
 
-module.exports = Update
+  return Update
+}
