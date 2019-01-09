@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Update = sequelize.define('update', {
+  const Update = sequelize.define('Update', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     userId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false,
       field: 'user_id'
     },
     ticketId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'ticket_id'
     }
   }, {

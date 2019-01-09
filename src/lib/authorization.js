@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const errors = require('../utils/errorCreator')
-const { Credentials, Employee, Customer } = require('../data-access')
+const { Credentials, Employee, Customer } = require('../data-access/DAOs')
 const { sha512 } = require('../utils/createHash')
 const { userType } = require('../constants/userTypes')
 

@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Customer = sequelize.define('customer', {
+  const Customer = sequelize.define('Customer', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     credentialsId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'credentials_id'
     }
   }, {

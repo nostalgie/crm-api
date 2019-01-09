@@ -1,6 +1,6 @@
 const passport = require('passport')
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
-const { Credentials } = require('../data-access')
+const { Credentials } = require('../data-access/DAOs')
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -1,15 +1,16 @@
 const { Op } = require('sequelize')
-const Employee = require('../models/Employee')
-const EmployeeRole = require('../models/EmployeeRole')
-const Customer = require('../models/Customer')
-const { adminRoles } = require('../../../constants/userTypes')
+const { adminRoles } = require('../../constants/userTypes')
 
 class EmployeeDAO {
+  constructor (db) {
+    this.db = db
+  }
+
   async getEmployeeByCredsId (id) {
     const options = {
       include: [
         {
-          model: EmployeeRole,
+          model: this.db.EmployeeRole,
           attributes: ['name']
         }
       ],
@@ -20,7 +21,7 @@ class EmployeeDAO {
       }
     }
 
-    return Employee.findOne(options)
+    return this.db.Employee.findOne(options)
   }
 
   getEmployeesForUpdates (ids) {
@@ -37,19 +38,19 @@ class EmployeeDAO {
       },
       include: [
         {
-          model: EmployeeRole,
+          model: this.db.EmployeeRole,
           attributes: [ 'name' ]
         }
       ]
     }
-    return Employee.findAll(options)
+    return this.db.Employee.findAll(options)
   }
 
   getSeniorAdminForCustomer (customerId) {
     const options = {
       include: [
         {
-          model: EmployeeRole,
+          model: this.db.EmployeeRole,
           attributes: [ 'name' ],
           where: {
             name: {
@@ -58,7 +59,7 @@ class EmployeeDAO {
           }
         },
         {
-          model: Customer,
+          model: this.db.Customer,
           attributes: [],
           through: {
             where: {
@@ -71,8 +72,8 @@ class EmployeeDAO {
       ]
     }
 
-    return Employee.findOne(options)
+    return this.db.Employee.findOne(options)
   }
 }
 
-module.exports = new EmployeeDAO()
+module.exports = EmployeeDAO

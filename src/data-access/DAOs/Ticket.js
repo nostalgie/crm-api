@@ -1,12 +1,14 @@
 const { Op } = require('sequelize')
-const Ticket = require('../models/Ticket')
-const Update = require('../models/Update')
 
-const ticketStates = require('../../../constants/ticketStates')
+const ticketStates = require('../../constants/ticketStates')
 
 class TicketDAO {
+  constructor (db) {
+    this.db = db
+  }
+
   create (ticket) {
-    return Ticket.create(ticket)
+    return this.db.Ticket.create(ticket)
   }
 
   getOpenTicketsOptions (userId) {
@@ -71,7 +73,7 @@ class TicketDAO {
     let options = {
       include: [
         {
-          model: Update,
+          model: this.db.Update,
           required: false
         }
       ]
@@ -110,7 +112,7 @@ class TicketDAO {
       ? { [Op.eq]: idsForTickets }
       : { [Op.in]: idsForTickets }
 
-    return Ticket.findAll(options)
+    return this.db.Ticket.findAll(options)
   }
 
   updateExecutor (ticketId, executorId) {
@@ -125,7 +127,7 @@ class TicketDAO {
       }
     }
 
-    return Ticket.update(fieldsToUpdate, options)
+    return this.db.Ticket.update(fieldsToUpdate, options)
   }
 
   finishTicket (ticketId) {
@@ -140,7 +142,7 @@ class TicketDAO {
       }
     }
 
-    return Ticket.update(fieldsToUpdate, options)
+    return this.db.Ticket.update(fieldsToUpdate, options)
   }
 
   rateTicket (ticketId, rating) {
@@ -155,8 +157,8 @@ class TicketDAO {
       }
     }
 
-    return Ticket.update(fieldsToUpdate, options)
+    return this.db.Ticket.update(fieldsToUpdate, options)
   }
 }
 
-module.exports = new TicketDAO()
+module.exports = TicketDAO

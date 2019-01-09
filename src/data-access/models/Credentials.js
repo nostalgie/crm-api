@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Credentials = sequelize.define('credentials', {
+  const Credentials = sequelize.define('Credentials', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    tableName: 'Credentials'
+    tableName: 'Login_Credentials'
   })
 
   return Credentials

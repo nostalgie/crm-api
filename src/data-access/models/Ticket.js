@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Ticket = sequelize.define('ticket', {
+  const Ticket = sequelize.define('Ticket', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     customerId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'customer_id'
     },
     executorId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'executor_id'
     }
   }, {

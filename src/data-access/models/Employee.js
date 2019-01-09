@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Employee = sequelize.define('employee', {
+  const Employee = sequelize.define('Employee', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       field: 'middle_name'
     },
     credentialsId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'credentials_id'
     },
     roleId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       field: 'role_id'
     }
   }, {

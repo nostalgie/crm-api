@@ -1,8 +1,10 @@
 const { Op } = require('sequelize')
-const Customer = require('../models/Customer')
-const Employee = require('../models/Employee')
 
 class CustomerDAO {
+  constructor (db) {
+    this.db = db
+  }
+
   getCustomerByCredsId (id) {
     const options = {
       where: {
@@ -12,7 +14,7 @@ class CustomerDAO {
       }
     }
 
-    return Customer.findOne(options)
+    return this.db.Customer.findOne(options)
   }
 
   getCustomersForUpdates (ids) {
@@ -28,7 +30,7 @@ class CustomerDAO {
         }
       }
     }
-    return Customer.findAll(options)
+    return this.db.Customer.findAll(options)
   }
 
   async getDependantCustomers (empId) {
@@ -36,7 +38,7 @@ class CustomerDAO {
       attributes: [ 'id', 'name' ],
       include: [
         {
-          model: Employee,
+          model: this.db.Employee,
           attributes: [ 'id' ],
           through: {
             where: {
@@ -49,9 +51,9 @@ class CustomerDAO {
       ]
     }
 
-    const customers = await Customer.findAll(options)
+    const customers = await this.db.Customer.findAll(options)
     return customers.map(customer => ({ id: customer.id, name: customer.name }))
   }
 }
 
-module.exports = new CustomerDAO()
+module.exports = CustomerDAO

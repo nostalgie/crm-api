@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const EmployeeRole = sequelize.define('emp_role', {
+  const EmployeeRole = sequelize.define('EmployeeRole', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
