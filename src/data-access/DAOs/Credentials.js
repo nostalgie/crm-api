@@ -1,9 +1,12 @@
 const { Op } = require('sequelize')
-const Credentials = require('../models/Credentials')
 
 class CredentialsDAO {
+  constructor (db) {
+    this.db = db
+  }
+
   async getByUsername (value) {
-    const result = await Credentials.findOne({
+    const result = await this.db.Credentials.findOne({
       where: {
         username: {
           [Op.eq]: value
@@ -15,4 +18,4 @@ class CredentialsDAO {
   }
 }
 
-module.exports = new CredentialsDAO()
+module.exports = CredentialsDAO

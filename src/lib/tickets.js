@@ -1,4 +1,4 @@
-const { Ticket, Customer, Employee, Update } = require('../data-access')
+const { Ticket, Customer, Employee, Update } = require('../data-access/DAOs')
 const { userType } = require('../constants/userTypes')
 
 const createTicket = async (user, ticketInfo) => {
