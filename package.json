@@ -4,9 +4,11 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "npm run start:dev",
+    "start": "npm run migrate && npm run start:dev",
     "start:dev": "NODE_ENV=development nodemon src/index",
     "standard": "standard",
+    "migrate": "sequelize db:migrate && npm run seed:refresh",
+    "seed:refresh": "sequelize db:seed:undo:all && sequelize db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
