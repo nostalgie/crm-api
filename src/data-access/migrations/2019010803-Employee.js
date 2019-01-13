@@ -1,5 +1,4 @@
 
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Employees', {
@@ -39,6 +38,8 @@ module.exports = {
           key: 'id'
         }
       }
+    }, {
+      charset: 'cp1251'
     })
   },
 

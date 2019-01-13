@@ -1,5 +1,4 @@
 
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Updates', {
@@ -38,6 +37,8 @@ module.exports = {
         allowNull: false,
         field: 'created_at'
       }
+    }, {
+      charset: 'cp1251'
     })
   },
 
