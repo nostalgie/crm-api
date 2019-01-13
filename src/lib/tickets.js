@@ -48,7 +48,7 @@ const getTickets = async (user, state) => {
           .push(
             ...Array.from(
               new Set(
-                ticket.updates
+                ticket.Updates
                   .filter(update => update.userType === userType[key])
                   .map(update => update.userId)
               )
@@ -67,7 +67,7 @@ const getTickets = async (user, state) => {
       { [info.id]: {
         firstName: info.firstName,
         lastName: info.lastName,
-        role: info.emp_role.name
+        role: info.EmployeeRole.name
       } }
     )),
     customer: usersInfo[1].map(info => (
@@ -88,7 +88,7 @@ const getTickets = async (user, state) => {
     updatedAt: ticket.updated_at,
     isFinished: ticket.isFinished,
     rating: ticket.rating,
-    updates: ticket.updates.map(update => {
+    updates: ticket.Updates.map(update => {
       const userInfo = sortedUpdates[update.userType]
         .find(info => +Object.keys(info)[0] === update.userId)[update.userId]
 

@@ -1,5 +1,3 @@
-
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Employee_Roles', [

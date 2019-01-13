@@ -29,7 +29,7 @@ const login = async (username, password) => {
   if (credentials.userType === userType.EMPLOYEE) {
     const emp = await Employee.getEmployeeByCredsId(credentials.id)
     JWTPayload.id = emp.id
-    JWTPayload.adminRole = emp.emp_role.name
+    JWTPayload.adminRole = emp.EmployeeRole.name
   } else {
     const customer = await Customer.getCustomerByCredsId(credentials.id)
     JWTPayload.id = customer.id

@@ -18,9 +18,6 @@ class TicketDAO {
       },
       isFinished: {
         [Op.eq]: false
-      },
-      executorId: {
-        [Op.eq]: userId
       }
     }
 
@@ -53,22 +50,6 @@ class TicketDAO {
     return whereOptions
   }
 
-  getSpecificAdminTicketsOptions (adminId) {
-    const whereOptions = {
-      rating: {
-        [Op.eq]: null
-      },
-      isFinished: {
-        [Op.eq]: false
-      },
-      executorId: { // ULTRA COOOOOL (AAAAA)
-        [Op.eq]: adminId
-      }
-    }
-
-    return whereOptions
-  }
-
   async getByState (userId, state, isCustomer, idsForTickets) {
     let options = {
       include: [
@@ -92,25 +73,20 @@ class TicketDAO {
         options.where = this.getClosedTicketsOptions()
         break
       }
-      // ToDo: HUGE refactoring of this logic
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      case ticketStates.FOR_DUTY: {
-        options.where = this.getSpecificAdminTicketsOptions(1)
-        break
-      }
-      case ticketStates.FOR_MANAGER: {
-        options.where = this.getSpecificAdminTicketsOptions(3)
-        break
-      }
-      case ticketStates.FOR_SENIOR: {
-        options.where = this.getSpecificAdminTicketsOptions(2)
-        break
-      }
     }
 
-    options.where.customerId = isCustomer
-      ? { [Op.eq]: idsForTickets }
-      : { [Op.in]: idsForTickets }
+    if (isCustomer) {
+      options.where.customerId = {
+        [Op.eq]: idsForTickets
+      }
+    } else {
+      options.where.customerId = {
+        [Op.in]: idsForTickets
+      }
+      options.where.executorId = {
+        [Op.eq]: userId
+      }
+    }
 
     return this.db.Ticket.findAll(options)
   }
