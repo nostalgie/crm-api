@@ -7,7 +7,7 @@ module.exports = {
         message: 'сообщение 1',
         user_id: 2,
         ticket_id: 1,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 2,
@@ -15,7 +15,7 @@ module.exports = {
         message: 'сообщение 2',
         user_id: 1,
         ticket_id: 1,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 3,
@@ -23,7 +23,7 @@ module.exports = {
         message: 'сообщение 3',
         user_id: 2,
         ticket_id: 1,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 4,
@@ -31,7 +31,7 @@ module.exports = {
         message: 'сообщение 1',
         user_id: 2,
         ticket_id: 2,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 5,
@@ -39,7 +39,7 @@ module.exports = {
         message: 'сообщение 2',
         user_id: 1,
         ticket_id: 2,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 6,
@@ -47,7 +47,7 @@ module.exports = {
         message: 'сообщение 3',
         user_id: 1,
         ticket_id: 2,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       },
       {
         id: 7,
@@ -55,7 +55,7 @@ module.exports = {
         message: 'сообщение 1',
         user_id: 2,
         ticket_id: 3,
-        created_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00'
       }
     ])
   },

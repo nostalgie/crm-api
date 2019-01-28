@@ -50,9 +50,19 @@ module.exports = {
           key: 'id'
         }
       },
-      executorId: {
+      executorFrom: {
         type: Sequelize.INTEGER,
-        field: 'executor_id',
+        field: 'executor_from',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Employees',
+          key: 'id'
+        }
+      },
+      executorTo: {
+        type: Sequelize.INTEGER,
+        field: 'executor_to',
+        allowNull: true,
         onDelete: 'CASCADE',
         references: {
           model: 'Employees',
