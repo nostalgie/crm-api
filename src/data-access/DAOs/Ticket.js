@@ -1,6 +1,7 @@
 const { Op } = require('sequelize')
 
 const ticketStates = require('../../constants/ticketStates')
+const { PAGE_SIZE } = require('../../constants')
 
 class TicketDAO {
   constructor (db) {
@@ -11,7 +12,7 @@ class TicketDAO {
     return this.db.Ticket.create(ticket)
   }
 
-  getOpenTicketsOptions (userId) {
+  getOpenTicketsOptions () {
     const whereOptions = {
       rating: {
         [Op.eq]: null
@@ -50,19 +51,33 @@ class TicketDAO {
     return whereOptions
   }
 
-  async getByState (userId, state, isCustomer, idsForTickets) {
+  async getByState (userId, isCustomer, queryParams) {
+    const {
+      startDate,
+      endDate,
+      page,
+      state,
+      ids: idsForTickets
+    } = queryParams
+
     let options = {
-      include: [
-        {
-          model: this.db.Update,
-          required: false
-        }
-      ]
+      attributes: [
+        'id',
+        'type',
+        'customerFirstName',
+        'customerLastName',
+        'customerNumber',
+        'description',
+        'rating',
+        'created_at'
+      ],
+      limit: PAGE_SIZE,
+      offset: (page - 1) * PAGE_SIZE
     }
 
     switch (state) {
       case ticketStates.OPEN: {
-        options.where = this.getOpenTicketsOptions(userId)
+        options.where = this.getOpenTicketsOptions()
         break
       }
       case ticketStates.AWAITING_REVIEW: {
@@ -85,6 +100,12 @@ class TicketDAO {
       }
       options.where.executorId = {
         [Op.eq]: userId
+      }
+    }
+
+    if (startDate) {
+      options.where.created_at = {
+        [Op.between]: [ startDate, endDate ]
       }
     }
 

@@ -11,8 +11,8 @@ module.exports = {
         is_finished: false,
         customer_id: 1,
         executor_id: 2,
-        created_at: '2018-12-05 10:14:00',
-        updated_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00',
+        updated_at: '2019-01-28 10:14:00'
       },
       {
         id: 2,
@@ -24,8 +24,8 @@ module.exports = {
         is_finished: true,
         customer_id: 1,
         executor_id: 2,
-        created_at: '2018-12-05 10:14:00',
-        updated_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00',
+        updated_at: '2019-01-28 10:14:00'
       },
       {
         id: 3,
@@ -38,8 +38,8 @@ module.exports = {
         rating: 3,
         customer_id: 1,
         executor_id: 2,
-        created_at: '2018-12-05 10:14:00',
-        updated_at: '2018-12-05 10:14:00'
+        created_at: '2019-01-28 10:14:00',
+        updated_at: '2019-01-28 10:14:00'
       }
     ])
   },
