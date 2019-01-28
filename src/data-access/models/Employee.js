@@ -25,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.INTEGER,
       field: 'role_id'
-    },
-    groupId: {
-      type: DataTypes.INTEGER,
-      field: 'group_id'
     }
   }, {
     tableName: 'Employees'
@@ -39,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     Employee.belongsTo(models.EmployeeRole, { foreignKey: 'role_id', targetKey: 'id', onDelete: 'CASCADE' })
     Employee.belongsToMany(models.Customer, { through: 'Customer_Admins', foreignKey: 'employee_id', onDelete: 'CASCADE' })
     Employee.hasMany(models.Ticket, { foreignKey: 'executorId', sourceKey: 'id', onDelete: 'CASCADE' })
-    Employee.belongsTo(models.EmployeeGroup, { foreignKey: 'group_id', targetKey: 'id', onDelete: 'CASCADE' })
+    Employee.belongsToMany(models.EmployeeGroup, { through: 'Group_Members', foreignKey: 'employee_id', onDelete: 'CASCADE' })
   }
 
   return Employee

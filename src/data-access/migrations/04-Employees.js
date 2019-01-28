@@ -36,15 +36,6 @@ module.exports = {
           model: 'Employee_Roles',
           key: 'id'
         }
-      },
-      groupId: {
-        type: Sequelize.INTEGER,
-        field: 'group_id',
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Group_Members',
-          key: 'id'
-        }
       }
     }, {
       charset: 'cp1251'

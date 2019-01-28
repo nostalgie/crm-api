@@ -10,5 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Employee_Groups'
   })
 
+  EmployeeGroup.associate = function (models) {
+    EmployeeGroup.belongsToMany(models.Employee, { through: 'Group_Members', foreignKey: 'group_id', onDelete: 'CASCADE' })
+  }
+
   return EmployeeGroup
 }
