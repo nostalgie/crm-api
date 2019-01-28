@@ -98,7 +98,7 @@ class TicketDAO {
       options.where.customerId = {
         [Op.in]: idsForTickets
       }
-      options.where.executorId = {
+      options.where.executorTo = {
         [Op.eq]: userId
       }
     }

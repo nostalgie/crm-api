@@ -38,6 +38,7 @@ module.exports = {
         description: 'Ошибка 01',
         is_finished: true,
         rating: 3,
+        customer_id: 1,
         executor_from: null,
         executor_to: 2,
         created_at: '2019-01-28 10:14:00',
