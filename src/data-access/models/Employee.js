@@ -34,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
     Employee.belongsTo(models.Credentials, { foreignKey: 'credentials_id', targetKey: 'id', onDelete: 'CASCADE' })
     Employee.belongsTo(models.EmployeeRole, { foreignKey: 'role_id', targetKey: 'id', onDelete: 'CASCADE' })
     Employee.belongsToMany(models.Customer, { through: 'Customer_Admins', foreignKey: 'employee_id', onDelete: 'CASCADE' })
-    Employee.hasMany(models.Ticket, { foreignKey: 'executorId', sourceKey: 'id', onDelete: 'CASCADE' })
+    Employee.hasMany(models.Ticket, { foreignKey: 'executor_from', sourceKey: 'id', onDelete: 'CASCADE' })
+    Employee.hasMany(models.Ticket, { foreignKey: 'executor_to', sourceKey: 'id', onDelete: 'CASCADE' })
     Employee.belongsToMany(models.EmployeeGroup, { through: 'Group_Members', foreignKey: 'employee_id', onDelete: 'CASCADE' })
   }
 

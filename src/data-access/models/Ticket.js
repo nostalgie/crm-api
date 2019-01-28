@@ -44,9 +44,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       field: 'customer_id'
     },
-    executorId: {
+    executorFrom: {
       type: DataTypes.INTEGER,
-      field: 'executor_id'
+      field: 'executor_from',
+      allowNull: true
+    },
+    executorTo: {
+      type: DataTypes.INTEGER,
+      field: 'executor_to'
     }
   }, {
     tableName: 'Tickets',
@@ -57,7 +62,8 @@ module.exports = (sequelize, DataTypes) => {
   Ticket.associate = function (models) {
     Ticket.hasMany(models.Update, { foreignKey: 'ticket_id', sourceKey: 'id', onDelete: 'CASCADE' })
     Ticket.belongsTo(models.Customer, { foreignKey: 'customer_id', sourceKey: 'id', onDelete: 'CASCADE' })
-    Ticket.belongsTo(models.Employee, { foreignKey: 'executorId', targetKey: 'id', onDelete: 'CASCADE' })
+    Ticket.belongsTo(models.Employee, { foreignKey: 'executor_from', targetKey: 'id', onDelete: 'CASCADE' })
+    Ticket.belongsTo(models.Employee, { foreignKey: 'executor_to', targetKey: 'id', onDelete: 'CASCADE' })
   }
 
   return Ticket
