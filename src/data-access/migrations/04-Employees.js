@@ -42,7 +42,7 @@ module.exports = {
         field: 'group_id',
         onDelete: 'CASCADE',
         references: {
-          model: 'Employee_Groups',
+          model: 'Group_Members',
           key: 'id'
         }
       }
