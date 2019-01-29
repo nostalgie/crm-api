@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
+const getOptionsByState = require('../utils/getOptionsByState')
 
-const ticketStates = require('../../constants/ticketStates')
 const { PAGE_SIZE } = require('../../constants')
 
 class TicketDAO {
@@ -12,52 +12,14 @@ class TicketDAO {
     return this.db.Ticket.create(ticket)
   }
 
-  getOpenTicketsOptions () {
-    const whereOptions = {
-      rating: {
-        [Op.eq]: null
-      },
-      isFinished: {
-        [Op.eq]: false
-      }
-    }
-
-    return whereOptions
-  }
-
-  getAwaitingTicketsOptions () {
-    const whereOptions = {
-      rating: {
-        [Op.eq]: null
-      },
-      isFinished: {
-        [Op.eq]: true
-      }
-    }
-
-    return whereOptions
-  }
-
-  getClosedTicketsOptions () {
-    const whereOptions = {
-      rating: {
-        [Op.ne]: null
-      },
-      isFinished: {
-        [Op.eq]: true
-      }
-    }
-
-    return whereOptions
-  }
-
   async getByState (userId, isCustomer, queryParams) {
     const {
       startDate,
       endDate,
       page,
       state,
-      ids: idsForTickets
+      ids: idsForTickets,
+      roleTo
     } = queryParams
 
     let options = {
@@ -75,22 +37,12 @@ class TicketDAO {
       offset: (page - 1) * PAGE_SIZE
     }
 
-    switch (state) {
-      case ticketStates.OPEN: {
-        options.where = this.getOpenTicketsOptions()
-        break
-      }
-      case ticketStates.AWAITING_REVIEW: {
-        options.where = this.getAwaitingTicketsOptions()
-        break
-      }
-      case ticketStates.CLOSED: {
-        options.where = this.getClosedTicketsOptions()
-        break
-      }
-    }
+    options = getOptionsByState(state)
 
-    if (isCustomer) {
+    if (roleTo) {
+      options = options(this.db, userId, roleTo)
+      console.log(options.include[0].include[0])
+    } else if (isCustomer) {
       options.where.customerId = {
         [Op.eq]: idsForTickets
       }

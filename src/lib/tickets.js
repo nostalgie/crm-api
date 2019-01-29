@@ -26,7 +26,7 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (user, { period, startDate = new Date(), endDate, state, page = 1 }) => {
+const getTickets = async (user, { period, startDate = new Date(), endDate, state, page = 1, role }) => {
   const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
@@ -67,7 +67,8 @@ const getTickets = async (user, { period, startDate = new Date(), endDate, state
     endDate,
     page,
     state,
-    ids: idsForTickets
+    ids: idsForTickets,
+    roleTo: role
   }
 
   const tickets = await Ticket.getByState(user.id, isCustomer, queryParams)
