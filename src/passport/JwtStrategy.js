@@ -14,7 +14,7 @@ passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
     return done()
   } else {
     const { username } = user
-    const { id, type, role } = jwtPayload
-    return done(null, { id, username, type, role })
+    const { id, type, adminRole } = jwtPayload
+    return done(null, { id, username, type, role: adminRole })
   }
 }))

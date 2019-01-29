@@ -12,7 +12,7 @@ class TicketDAO {
     return this.db.Ticket.create(ticket)
   }
 
-  async getByState (userId, isCustomer, queryParams) {
+  getByState (userId, isCustomer, queryParams) {
     const {
       startDate,
       endDate,
@@ -41,7 +41,6 @@ class TicketDAO {
 
     if (roleTo) {
       options = options(this.db, userId, roleTo)
-      console.log(options.include[0].include[0])
     } else if (isCustomer) {
       options.where.customerId = {
         [Op.eq]: idsForTickets
@@ -62,6 +61,23 @@ class TicketDAO {
     }
 
     return this.db.Ticket.findAll(options)
+  }
+
+  getTicketInfo (ticketId) {
+    const options = {
+      where: {
+        id: {
+          [Op.eq]: ticketId
+        }
+      },
+      include: [
+        {
+          model: this.db.Update
+        }
+      ]
+    }
+
+    return this.db.Ticket.findOne(options)
   }
 
   updateExecutor (ticketId, oldExecutorId, newExecutorId) {
