@@ -112,9 +112,10 @@ class TicketDAO {
     return this.db.Ticket.findAll(options)
   }
 
-  updateExecutor (ticketId, executorId) {
+  updateExecutor (ticketId, oldExecutorId, newExecutorId) {
     const fieldsToUpdate = {
-      executorId
+      executorFrom: oldExecutorId,
+      executorTo: newExecutorId
     }
     const options = {
       where: {
@@ -129,7 +130,8 @@ class TicketDAO {
 
   finishTicket (ticketId) {
     const fieldsToUpdate = {
-      isFinished: true
+      isFinished: true,
+      executorFrom: null
     }
     const options = {
       where: {

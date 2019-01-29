@@ -2,8 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Update = sequelize.define('Update', {
     id: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
       allowNull: false
     },
     userType: {

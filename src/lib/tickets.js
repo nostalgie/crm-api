@@ -9,7 +9,7 @@ const createTicket = async (user, ticketInfo) => {
 
   const ticket = {
     customerId: user.id,
-    executorId: seniorAdmin.id,
+    newExecutorId: seniorAdmin.id,
     customerFirstName: ticketInfo.firstName,
     customerLastName: ticketInfo.lastName,
     customerNumber: ticketInfo.phoneNumber,
@@ -144,7 +144,7 @@ const getTickets = async (user, { period, startDate = new Date(), endDate, state
 }
 
 const updateTicket = async (user, updateInfo) => {
-  const { ticketId, executorId, message } = updateInfo
+  const { ticketId, executorId, newExecutorId, message } = updateInfo
   const update = {
     userType: user.type,
     userId: user.id,
@@ -154,8 +154,8 @@ const updateTicket = async (user, updateInfo) => {
 
   const createdUpdate = await Update.create(update)
 
-  if (executorId) {
-    await Ticket.updateExecutor(ticketId, executorId)
+  if (newExecutorId) {
+    await Ticket.updateExecutor(ticketId, executorId, newExecutorId)
   }
   return {
     id: createdUpdate.id
