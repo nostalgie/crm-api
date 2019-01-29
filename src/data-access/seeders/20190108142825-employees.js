@@ -7,8 +7,7 @@ module.exports = {
         last_name: 'Petrovich',
         middle_name: 'Duty',
         credentials_id: 1,
-        role_id: 1,
-        group_id: 1
+        role_id: 1
       },
       {
         id: 2,
@@ -16,8 +15,7 @@ module.exports = {
         last_name: 'Qwerty',
         middle_name: 'Senior',
         credentials_id: 2,
-        role_id: 2,
-        group_id: 1
+        role_id: 2
       },
       {
         id: 3,
@@ -25,8 +23,7 @@ module.exports = {
         last_name: 'Aezakmi',
         middle_name: 'Manager',
         credentials_id: 3,
-        role_id: 3,
-        group_id: 1
+        role_id: 3
       }
     ])
   },

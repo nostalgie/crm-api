@@ -1,5 +1,8 @@
+const { addDays, addWeeks, addMonths, format } = require('date-fns')
+const periods = require('../constants/periods')
 const { Ticket, Customer, Employee, Update } = require('../data-access/DAOs')
 const { userType } = require('../constants/userTypes')
+const { DATE_FORMAT } = require('../constants')
 
 const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
@@ -23,7 +26,7 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (user, state) => {
+const getTickets = async (user, { period, startDate = new Date(), endDate, state, page = 1 }) => {
   const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
@@ -34,48 +37,81 @@ const getTickets = async (user, state) => {
     idsForTickets = customers.map(customer => customer.id)
   }
 
-  const tickets = await Ticket.getByState(user.id, state, isCustomer, idsForTickets)
-
-  const userTypeIds = {
-    employee: [],
-    customer: []
+  if (period) {
+    startDate = format(startDate, DATE_FORMAT)
+    switch (period) {
+      case periods.DAY: {
+        endDate = format(addDays(new Date(), 1), DATE_FORMAT)
+        break
+      }
+      case periods.WEEK: {
+        endDate = format(addWeeks(new Date(), 1), DATE_FORMAT)
+        break
+      }
+      case periods.MONTH: {
+        endDate = format(addMonths(new Date(), 1), DATE_FORMAT)
+        break
+      }
+      case periods.CUSTOM: {
+        endDate = format(endDate, DATE_FORMAT)
+        break
+      }
+    }
+  } else {
+    startDate = null
+    endDate = null
   }
 
-  for (let ticket of tickets) {
-    Object.keys(userType)
-      .forEach(key =>
-        userTypeIds[userType[key]]
-          .push(
-            ...Array.from(
-              new Set(
-                ticket.Updates
-                  .filter(update => update.userType === userType[key])
-                  .map(update => update.userId)
-              )
-            )
-          )
-      )
+  const queryParams = {
+    startDate,
+    endDate,
+    page,
+    state,
+    ids: idsForTickets
   }
 
-  const usersInfo = await Promise.all([
-    Employee.getEmployeesForUpdates(userTypeIds[userType.EMPLOYEE]),
-    Customer.getCustomersForUpdates(userTypeIds[userType.CUSTOMER])
-  ])
+  const tickets = await Ticket.getByState(user.id, isCustomer, queryParams)
 
-  const sortedUpdates = {
-    employee: usersInfo[0].map(info => (
-      { [info.id]: {
-        firstName: info.firstName,
-        lastName: info.lastName,
-        role: info.EmployeeRole.name
-      } }
-    )),
-    customer: usersInfo[1].map(info => (
-      { [info.id]: {
-        name: info.name
-      } }
-    ))
-  }
+  // const userTypeIds = {
+  //   employee: [],
+  //   customer: []
+  // }
+
+  // for (let ticket of tickets) {
+  //   Object.keys(userType)
+  //     .forEach(key =>
+  //       userTypeIds[userType[key]]
+  //         .push(
+  //           ...Array.from(
+  //             new Set(
+  //               ticket.Updates
+  //                 .filter(update => update.userType === userType[key])
+  //                 .map(update => update.userId)
+  //             )
+  //           )
+  //         )
+  //     )
+  // }
+
+  // const usersInfo = await Promise.all([
+  //   Employee.getEmployeesForUpdates(userTypeIds[userType.EMPLOYEE]),
+  //   Customer.getCustomersForUpdates(userTypeIds[userType.CUSTOMER])
+  // ])
+
+  // const sortedUpdates = {
+  //   employee: usersInfo[0].map(info => (
+  //     { [info.id]: {
+  //       firstName: info.firstName,
+  //       lastName: info.lastName,
+  //       role: info.EmployeeRole.name
+  //     } }
+  //   )),
+  //   customer: usersInfo[1].map(info => (
+  //     { [info.id]: {
+  //       name: info.name
+  //     } }
+  //   ))
+  // }
 
   const ticketsToSend = tickets.map((ticket) => ({
     id: ticket.id,
@@ -84,24 +120,24 @@ const getTickets = async (user, state) => {
     lastName: ticket.customerLastName,
     phoneNumber: ticket.customerNumber,
     description: ticket.description,
-    createdAt: ticket.created_at,
-    updatedAt: ticket.updated_at,
-    isFinished: ticket.isFinished,
-    rating: ticket.rating,
-    updates: ticket.Updates.map(update => {
-      const userInfo = sortedUpdates[update.userType]
-        .find(info => +Object.keys(info)[0] === update.userId)[update.userId]
+    createdAt: format(ticket.created_at, DATE_FORMAT),
+    // updatedAt: ticket.updated_at,
+    // isFinished: ticket.isFinished,
+    rating: ticket.rating
+    // updates: ticket.Updates.map(update => {
+    // const userInfo = sortedUpdates[update.userType]
+    //   .find(info => +Object.keys(info)[0] === update.userId)[update.userId]
 
-      return {
-        id: update.id,
-        message: update.message,
-        createdAt: update.created_at,
-        userInfo: {
-          type: update.userType,
-          ...userInfo
-        }
-      }
-    })
+    // return {
+    //   id: update.id,
+    //   message: update.message,
+    //   createdAt: update.created_at,
+    //   userInfo: {
+    //     type: update.userType,
+    //     ...userInfo
+    //   }
+    // }
+    // })
   }))
 
   return { tickets: ticketsToSend }
