@@ -160,7 +160,7 @@ const getTicketInfo = async (ticketId) => {
 }
 
 const updateTicket = async (user, updateInfo) => {
-  const { ticketId, executorId, newExecutorId, message } = updateInfo
+  const { ticketId, executorId: newExecutorId, message } = updateInfo
   const update = {
     userType: user.type,
     userId: user.id,
@@ -171,7 +171,7 @@ const updateTicket = async (user, updateInfo) => {
   const createdUpdate = await Update.create(update)
 
   if (newExecutorId) {
-    await Ticket.updateExecutor(ticketId, executorId, newExecutorId)
+    await Ticket.updateExecutor(ticketId, user.id, newExecutorId)
   }
   return {
     id: createdUpdate.id
