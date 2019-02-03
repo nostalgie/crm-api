@@ -26,7 +26,7 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (user, { period, startDate = new Date(), endDate, state, page = 1, role }) => {
+const getTickets = async (user, { period, startDate, endDate = format(new Date(), DATE_FORMAT), state, page = 1, role }) => {
   const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
@@ -41,19 +41,19 @@ const getTickets = async (user, { period, startDate = new Date(), endDate, state
     startDate = format(startDate, DATE_FORMAT)
     switch (period) {
       case periods.DAY: {
-        endDate = format(addDays(new Date(), 1), DATE_FORMAT)
+        startDate = format(addDays(new Date(), -1), DATE_FORMAT)
         break
       }
       case periods.WEEK: {
-        endDate = format(addWeeks(new Date(), 1), DATE_FORMAT)
+        startDate = format(addWeeks(new Date(), -1), DATE_FORMAT)
         break
       }
       case periods.MONTH: {
-        endDate = format(addMonths(new Date(), 1), DATE_FORMAT)
+        startDate = format(addMonths(new Date(), -1), DATE_FORMAT)
         break
       }
       case periods.CUSTOM: {
-        endDate = format(endDate, DATE_FORMAT)
+        startDate = format(startDate, DATE_FORMAT)
         break
       }
     }
