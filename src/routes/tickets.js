@@ -2,12 +2,22 @@ const express = require('express')
 const passport = require('passport')
 const HttpCodes = require('http-status-codes')
 const ticketsService = require('../lib/tickets')
+const ticketStates = require('../constants/ticketStates')
 
 const ticketsRouter = express.Router()
 
 ticketsRouter.get('/tickets', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
     const { query, user } = req
+    const { state } = query
+
+    console.log(query)
+    if (state.includes('for_')) {
+      query.role = state.split('_').slice(1).join('_')
+      query.state = ticketStates.BETWEEN_EMPLOYEES
+      console.log(query)
+    }
+
     const getResult = await ticketsService.getTickets(user, query)
     res.send(getResult)
   } catch (error) {
