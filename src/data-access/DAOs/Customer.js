@@ -33,7 +33,7 @@ class CustomerDAO {
     return this.db.Customer.findAll(options)
   }
 
-  async getDependantCustomers (empId) {
+  async getDependentCustomers (empId) {
     const options = {
       attributes: [ 'id', 'name' ],
       include: [

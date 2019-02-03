@@ -33,7 +33,7 @@ const getTickets = async (user, { period, startDate = new Date(), endDate, state
   if (isCustomer) {
     idsForTickets = user.id
   } else {
-    const customers = await Customer.getDependantCustomers(user.id)
+    const customers = await Customer.getDependentCustomers(user.id)
     idsForTickets = customers.map(customer => customer.id)
   }
 
