@@ -81,23 +81,7 @@ const getTickets = async (user, { period, startDate = new Date(), endDate, state
     phoneNumber: ticket.customerNumber,
     description: ticket.description,
     createdAt: format(ticket.created_at, DATE_FORMAT),
-    // updatedAt: ticket.updated_at,
-    // isFinished: ticket.isFinished,
     rating: ticket.rating
-    // updates: ticket.Updates.map(update => {
-    // const userInfo = sortedUpdates[update.userType]
-    //   .find(info => +Object.keys(info)[0] === update.userId)[update.userId]
-
-    // return {
-    //   id: update.id,
-    //   message: update.message,
-    //   createdAt: update.created_at,
-    //   userInfo: {
-    //     type: update.userType,
-    //     ...userInfo
-    //   }
-    // }
-    // })
   }))
 
   return { tickets: ticketsToSend }
@@ -172,7 +156,7 @@ const getTicketInfo = async (ticketId) => {
     })
   }
 
-  return { tickets: ticketToSend }
+  return { ticket: ticketToSend }
 }
 
 const updateTicket = async (user, updateInfo) => {
