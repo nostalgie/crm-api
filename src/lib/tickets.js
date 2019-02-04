@@ -26,7 +26,7 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (user, { period, startDate, endDate = format(new Date(), DATE_FORMAT), state, page = 1, role }) => {
+const getTickets = async (user, { period, startDate, endDate = format(new Date(), DATE_FORMAT), state, page = 1, role, customer }) => {
   const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
@@ -68,7 +68,8 @@ const getTickets = async (user, { period, startDate, endDate = format(new Date()
     page,
     state,
     ids: idsForTickets,
-    roleTo: role
+    roleTo: role,
+    customerId: customer
   }
 
   const tickets = await Ticket.getByState(user.id, isCustomer, queryParams)
@@ -116,16 +117,20 @@ const getTicketInfo = async (ticketId) => {
 
   const updatesWithUsers = {
     employee: users[0].map(info => (
-      { [info.id]: {
-        firstName: info.firstName,
-        lastName: info.lastName,
-        role: info.EmployeeRole.name
-      } }
+      {
+        [info.id]: {
+          firstName: info.firstName,
+          lastName: info.lastName,
+          role: info.EmployeeRole.name
+        }
+      }
     )),
     customer: users[1].map(info => (
-      { [info.id]: {
-        name: info.name
-      } }
+      {
+        [info.id]: {
+          name: info.name
+        }
+      }
     ))
   }
 
