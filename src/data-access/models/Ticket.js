@@ -2,9 +2,9 @@ module.exports = (sequelize, DataTypes) => {
   const Ticket = sequelize.define('Ticket', {
     id: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     type: {
       type: DataTypes.ENUM,
