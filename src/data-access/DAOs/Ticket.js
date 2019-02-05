@@ -23,7 +23,9 @@ class TicketDAO {
       customerId
     } = queryParams
 
-    let options = {
+    let options = getOptionsByState(state)
+    options = {
+      ...options,
       attributes: [
         'id',
         'type',
@@ -37,8 +39,6 @@ class TicketDAO {
       limit: PAGE_SIZE,
       offset: (page - 1) * PAGE_SIZE
     }
-
-    options = getOptionsByState(state)
 
     if (roleTo) {
       options = options(this.db, userId, roleTo)
@@ -61,7 +61,8 @@ class TicketDAO {
       }
     }
 
-    return this.db.Ticket.findAll(options)
+    console.log(options)
+    return this.db.Ticket.findAndCountAll(options)
   }
 
   getTicketInfo (ticketId) {

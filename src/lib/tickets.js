@@ -2,7 +2,7 @@ const { addDays, addWeeks, addMonths, format } = require('date-fns')
 const periods = require('../constants/periods')
 const { Ticket, Customer, Employee, Update } = require('../data-access/DAOs')
 const { userType } = require('../constants/userTypes')
-const { DATE_FORMAT } = require('../constants')
+const { DATE_FORMAT, PAGE_SIZE } = require('../constants')
 
 const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
@@ -75,7 +75,7 @@ const getTickets = async (user, { period, startDate, endDate = format(addDays(ne
 
   const tickets = await Ticket.getByState(user.id, isCustomer, queryParams)
 
-  const ticketsToSend = tickets.map((ticket) => ({
+  const ticketsToSend = tickets.rows.map((ticket) => ({
     id: ticket.id,
     type: ticket.type,
     firstName: ticket.customerFirstName,
@@ -86,7 +86,12 @@ const getTickets = async (user, { period, startDate, endDate = format(addDays(ne
     rating: ticket.rating
   }))
 
-  return { tickets: ticketsToSend }
+  const pages = Math.ceil(tickets.count / PAGE_SIZE)
+
+  return {
+    tickets: ticketsToSend,
+    pages
+  }
 }
 
 const getTicketInfo = async (ticketId) => {
