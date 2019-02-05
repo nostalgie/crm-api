@@ -4,15 +4,15 @@ const getOptionsByState = require('../utils/getOptionsByState')
 const { PAGE_SIZE } = require('../../constants')
 
 class TicketDAO {
-  constructor(db) {
+  constructor (db) {
     this.db = db
   }
 
-  create(ticket) {
+  create (ticket) {
     return this.db.Ticket.create(ticket)
   }
 
-  getByState(userId, isCustomer, queryParams) {
+  getByState (userId, isCustomer, queryParams) {
     const {
       startDate,
       endDate,
@@ -64,7 +64,7 @@ class TicketDAO {
     return this.db.Ticket.findAll(options)
   }
 
-  getTicketInfo(ticketId) {
+  getTicketInfo (ticketId) {
     const options = {
       where: {
         id: {
@@ -81,7 +81,7 @@ class TicketDAO {
     return this.db.Ticket.findOne(options)
   }
 
-  updateExecutor(ticketId, oldExecutorId, newExecutorId) {
+  updateExecutor (ticketId, oldExecutorId, newExecutorId) {
     const fieldsToUpdate = {
       executorFrom: oldExecutorId,
       executorTo: newExecutorId
@@ -97,7 +97,7 @@ class TicketDAO {
     return this.db.Ticket.update(fieldsToUpdate, options)
   }
 
-  finishTicket(ticketId) {
+  finishTicket (ticketId) {
     const fieldsToUpdate = {
       isFinished: true,
       executorFrom: null
@@ -113,7 +113,7 @@ class TicketDAO {
     return this.db.Ticket.update(fieldsToUpdate, options)
   }
 
-  rateTicket(ticketId, rating) {
+  rateTicket (ticketId, rating) {
     const fieldsToUpdate = {
       rating
     }

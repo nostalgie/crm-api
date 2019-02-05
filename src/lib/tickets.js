@@ -6,10 +6,11 @@ const { DATE_FORMAT } = require('../constants')
 
 const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
+  console.log(seniorAdmin.id)
 
   const ticket = {
     customerId: user.id,
-    newExecutorId: seniorAdmin.id,
+    executorTo: seniorAdmin.id,
     customerFirstName: ticketInfo.firstName,
     customerLastName: ticketInfo.lastName,
     customerNumber: ticketInfo.phoneNumber,
@@ -26,7 +27,7 @@ const createTicket = async (user, ticketInfo) => {
   }
 }
 
-const getTickets = async (user, { period, startDate, endDate = format(new Date(), DATE_FORMAT), state, page = 1, role, customer }) => {
+const getTickets = async (user, { period, startDate, endDate = format(addDays(new Date(), 1), DATE_FORMAT), state, page = 1, role, customer }) => {
   const isCustomer = user.type === userType.CUSTOMER
   let idsForTickets
 
