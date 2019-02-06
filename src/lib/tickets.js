@@ -8,7 +8,7 @@ const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
 
   const ticket = {
-    customerId: user.id,
+    customerId: ticketInfo.customerId || user.id,
     executorTo: seniorAdmin.id,
     customerFirstName: ticketInfo.firstName,
     customerLastName: ticketInfo.lastName,
