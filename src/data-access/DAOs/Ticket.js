@@ -61,7 +61,6 @@ class TicketDAO {
       }
     }
 
-    console.log(options)
     return this.db.Ticket.findAndCountAll(options)
   }
 

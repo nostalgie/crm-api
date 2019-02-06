@@ -6,7 +6,6 @@ const { DATE_FORMAT, PAGE_SIZE } = require('../constants')
 
 const createTicket = async (user, ticketInfo) => {
   const seniorAdmin = await Employee.getSeniorAdminForCustomer(user.id)
-  console.log(seniorAdmin.id)
 
   const ticket = {
     customerId: user.id,

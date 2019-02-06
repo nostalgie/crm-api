@@ -11,11 +11,9 @@ ticketsRouter.get('/tickets', passport.authenticate('jwt', { session: false }), 
     const { query, user } = req
     const { state } = query
 
-    console.log(query)
     if (state.includes('for_')) {
       query.role = state.split('_').slice(1).join('_')
       query.state = ticketStates.BETWEEN_EMPLOYEES
-      console.log(query)
     }
 
     const getResult = await ticketsService.getTickets(user, query)
