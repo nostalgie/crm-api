@@ -24,6 +24,11 @@ class TicketDAO {
     } = queryParams
 
     let options = getOptionsByState(state)
+
+    if (roleTo) {
+      options = options(this.db, userId, roleTo)
+    }
+
     options = {
       ...options,
       attributes: [
@@ -40,18 +45,18 @@ class TicketDAO {
       offset: (page - 1) * PAGE_SIZE
     }
 
-    if (roleTo) {
-      options = options(this.db, userId, roleTo)
-    } else if (isCustomer || customerId) {
-      options.where.customerId = {
-        [Op.eq]: customerId || idsForTickets
-      }
-    } else {
-      options.where.customerId = {
-        [Op.in]: idsForTickets
-      }
-      options.where.executorTo = {
-        [Op.eq]: userId
+    if (!roleTo) {
+      if (isCustomer || customerId) {
+        options.where.customerId = {
+          [Op.eq]: customerId || idsForTickets
+        }
+      } else {
+        options.where.customerId = {
+          [Op.in]: idsForTickets
+        }
+        options.where.executorTo = {
+          [Op.eq]: userId
+        }
       }
     }
 
